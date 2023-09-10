@@ -1,3 +1,7 @@
+![](./resources/work_in_progress.png)
+
+### SFU OS Development Club Fall 2023 Project
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
