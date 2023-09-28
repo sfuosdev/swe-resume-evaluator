@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "express": "^4.18.2",
+    "python-shell": "^5.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
@@ -32,9 +34,9 @@
     "build": "GENERATE_SOURCEMAP=false react-scripts build",
     "test": "GENERATE_SOURCEMAP=false react-scripts test",
     "eject": "react-scripts eject",
-    "prettier": "prettier --write src",
-    "lint": "eslint src/**/*.js{,x}",
-    "lint:fix": "eslint --fix src/**/*.js{,x}",
+    "prettier": "prettier --write src node",
+    "lint": "eslint src/**/*.js{,x} node/**/*.js",
+    "lint:fix": "eslint --fix src/**/*.js{,x} node/**/*.js",
     "prepare": "husky install"
   },
   "eslintConfig": {
