@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@emotion/react": "^11.11.1",
     "express": "^4.18.2",
     "python-shell": "^5.0.0",
     "react": "^18.2.0",
@@ -12,9 +13,13 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "@emotion/babel-plugin": "^11.11.0",
+    "@emotion/babel-preset-css-prop": "^11.11.0",
+    "@emotion/eslint-plugin": "^11.11.0",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "customize-cra": "^1.0.0",
     "eslint": "^8.40.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-prettier": "^8.8.0",
@@ -24,15 +29,17 @@
     "husky": "^8.0.3",
     "jest": "^27.5.1",
     "jest-when": "^3.5.2",
-    "lint-staged": "^13.2.2",
-    "prettier": "^2.8.8"
+    "jsdoc": "^4.0.2",
+    "lint-staged": "^13.3.0",
+    "prettier": "^2.8.8",
+    "react-app-rewired": "^2.2.1"
   },
   "scripts": {
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
-    "start": "GENERATE_SOURCEMAP=false react-scripts start",
-    "build": "GENERATE_SOURCEMAP=false react-scripts build",
-    "test": "GENERATE_SOURCEMAP=false react-scripts test",
+    "start": "GENERATE_SOURCEMAP=false react-app-rewired start",
+    "build": "GENERATE_SOURCEMAP=false react-app-rewired build",
+    "test": "GENERATE_SOURCEMAP=false react-app-rewired test",
     "eject": "react-scripts eject",
     "prettier": "prettier --write src node",
     "lint": "eslint src/**/*.js{,x} node/**/*.js",
@@ -43,6 +50,11 @@
     "extends": [
       "react-app",
       "react-app/jest"
+    ]
+  },
+  "jest": {
+    "transformIgnorePatterns": [
+        "node_modules/(?!@testing-library)"
     ]
   },
   "browserslist": {

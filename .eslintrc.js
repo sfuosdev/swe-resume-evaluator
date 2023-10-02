@@ -7,7 +7,7 @@ module.exports = {
         'plugin:testing-library/react',
         'plugin:prettier/recommended',
     ],
-    plugins: ['react', 'jest'],
+    plugins: ['react', 'jest', '@emotion'],
     env: {
         browser: true,
         es2021: true,
@@ -22,6 +22,8 @@ module.exports = {
         'no-useless-constructor': 0,
         'import/prefer-default-export': 0,
         'jest/no-identical-title': 0,
+        '@emotion/jsx-import': 0,
+        'react/no-unknown-property': ['error', { ignore: ['css'] }],
         'import/no-extraneous-dependencies': [
             'error',
             { devDependencies: true },
