@@ -20,6 +20,3 @@ def pdf2Tokens(fpath: str) -> list:
             doc = nlp(text)
             Tokens = Tokens + list(doc)
     return Tokens
-
-
-print(pdf2Tokens('F:/swe-resume-evaluator/python/resources/sample_resume.pdf'))
