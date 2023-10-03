@@ -7,23 +7,24 @@ import spacy
 import re
 
 
-# Load the English language model in spacy
-nlp = spacy.load("en_core_web_sm")
+def pdf2Token(fpath: str) -> list(str):
+    # Load the English language model in spacy
+    nlp = spacy.load("en_core_web_sm")
 
-# Parse the PDF file and extract the text
-raw = parser.from_file(fpath)
-text = raw['content'].strip()
+    # Parse the PDF file and extract the text
+    raw = parser.from_file(fpath)
+    text = raw['content'].strip()
 
-# Tokenize the text
-doc = list(nlp(text))
+    # Tokenize the text
+    doc = list(nlp(text))
 
-# Remove double spaces
-delList = []
-for i in range(len(doc)):
-    if re.match(r"\s\s", doc[i].text):
-        delList.append(i)
-for index in sorted(delList, reverse=True):
-    del doc[index]
+    # Remove double spaces
+    delList = []
+    for i in range(len(doc)):
+        if re.match(r"\s\s", doc[i].text):
+            delList.append(i)
+    for index in sorted(delList, reverse=True):
+        del doc[index]
 
-# Return the tokens
-return list(doc)
+    # Return the tokens
+    return list(doc)
