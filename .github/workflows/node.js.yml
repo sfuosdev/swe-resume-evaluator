@@ -23,13 +23,13 @@ jobs:
                   node-version: ${{ matrix.node-version }}
                   cache: 'npm'
             - name: Install React Dependencies
-              run: npm install
+              run: npm install --legacy-peer-deps
 
             - name: Run React Tests
               run: npm test
 
             - name: Install NodeJS Dependencies
-              run: npm install
+              run: npm install --legacy-peer-deps
               working-directory: server
 
             - name: Run NodeJS Tests
