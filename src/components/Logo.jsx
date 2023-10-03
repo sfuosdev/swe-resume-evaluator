@@ -10,16 +10,15 @@ const Image = styled.img`
 
 /**
  * Logo component displays a logo image or an alt text for a width and height given by the props
- * @component
- * @example
- * return (<Logo width={300} height={350} />)
  */
 function Logo({ width, height }) {
     return <Image src={logo} width={width} height={height} alt="logo" />;
 }
 
 Logo.propTypes = {
+    /** Width size in pixel for the logo component.  */
     width: PropTypes.number,
+    /** Height size in pixel for the logo component.  */
     height: PropTypes.number,
 };
 

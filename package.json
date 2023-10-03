@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "better-docs": "^2.7.2",
     "python-shell": "^5.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -27,10 +26,10 @@
     "husky": "^8.0.3",
     "jest": "^27.5.1",
     "jest-when": "^3.5.2",
-    "jsdoc": "^4.0.2",
     "lint-staged": "^13.3.0",
     "prettier": "^2.8.8",
-    "prop-types": "^15.8.1"
+    "prop-types": "^15.8.1",
+    "react-styleguidist": "^13.1.1"
   },
   "scripts": {
     "predeploy": "npm run build",
