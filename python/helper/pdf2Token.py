@@ -7,7 +7,7 @@ import spacy
 import re
 
 
-def pdf2Token(fpath: str) -> list(str):
+def pdf2Token(fpath: str) -> list:
     # Load the English language model in spacy
     nlp = spacy.load("en_core_web_sm")
 
