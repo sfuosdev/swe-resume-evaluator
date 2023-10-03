@@ -1,22 +1,18 @@
-# This function loads spacy and uses the en_core_web_sm model,
-# which is a small English language model that includes a vocabulary,
-# a binary model, and a set of rules. It then creates an empty list called Tokens,
-# and then iterates through the pages of the pdf file, extracting the text from each page.
-# If text is extracted, it creates a doc object that contains the text,
-# and then adds the doc to the list Tokens. The function then returns the list Tokens.
+# This code uses the Tika library to parse a PDF file and extract the text from the file.
+#  It then uses the spaCy library to tokenize the text and return a list of tokens.
 
-from PyPDF2 import PdfReader
+from tika import parser
 import spacy
 
 
 def pdf2Tokens(fpath: str) -> list:
-    Tokens = []
+    # Load the English language model in spacy
     nlp = spacy.load("en_core_web_sm")
-    pdf = PdfReader(fpath)
-    for i in range(len(pdf.pages)):
-        page = pdf.pages[i]
-        text = page.extract_text()
-        if text:
-            doc = nlp(text)
-            Tokens = Tokens + list(doc)
-    return Tokens
+
+    # Parse the PDF file and extract the text
+    raw = parser.from_file(fpath)
+    text = raw['content'].strip()
+
+    # Tokenize the text
+    doc = nlp(text)
+    return list(doc)
