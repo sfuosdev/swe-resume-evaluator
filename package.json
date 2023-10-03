@@ -32,6 +32,7 @@
     "react-styleguidist": "^13.1.1"
   },
   "scripts": {
+    "preinstall": "./preinstall.sh",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
     "start": "GENERATE_SOURCEMAP=false react-scripts start",
