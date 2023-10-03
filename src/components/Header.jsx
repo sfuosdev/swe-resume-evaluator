@@ -1,24 +1,24 @@
 import React from 'react';
-import { css } from '@emotion/react';
+import styled from 'styled-components';
+
+const Wrapper = styled.div`
+    display: flex;
+    padding: 5px;
+    border-size: 1px;
+    border-width: 2px;
+    border-style: dashed;
+    justify-content: space-between;
+    align-items: center;
+`;
 
 function Header() {
     return (
-        <div
-            css={css`
-                display: flex;
-                padding: 5px;
-                border-size: 1px;
-                border-width: 2px;
-                border-style: dashed;
-                justify-content: space-between;
-                align-items: center;
-            `}
-        >
+        <Wrapper>
             <div />
             <button type="button" onClick={() => null}>
                 Login
             </button>
-        </div>
+        </Wrapper>
     );
 }
 
