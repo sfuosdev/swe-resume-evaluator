@@ -1,0 +1,25 @@
+name: Python preprocessor
+
+on:
+    push:
+        branches: ['main']
+    pull_request:
+        branches: ['main']
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.8
+      - name: Install pipenv
+        run: pip install pipenv
+        working-directory: python
+
+      - name: Install Dependencies
+        run: pipenv install
+        working-directory: python
