@@ -8,6 +8,7 @@ function MainPage() {
         <div>
             <Header />
             <Logo width={250} height={250} />
+            <Dropzone />
             <Footer />
         </div>
     );
