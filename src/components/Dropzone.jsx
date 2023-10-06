@@ -1,17 +1,17 @@
+import React from 'react';
+import styled from 'styled-components';
 
 const Wrapper = styled.div`
-    display: flex
-`
+    display: flex;
+`;
 
-function Dropzone () {
-    <Wrapper> 
+function Dropzone() {
+    <Wrapper>
         <div>
             Drop zone here
-            <div>
-                Upload here
-            </div>
+            <div>Upload here</div>
         </div>
-    </Wrapper>
+    </Wrapper>;
 }
 
-export default Dropzone
+export default Dropzone;
