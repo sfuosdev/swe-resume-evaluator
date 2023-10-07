@@ -21,27 +21,23 @@ const Wrapper = styled.div`
 function Dropzone({ handleFile }) {
     // Track uploaded file object to be passed to handleFile Prop
     const [uploadedFile, setUploadedFile] = useState({});
+
     // Track uploaded file details to be displayed to users
     const [fileDetailsDropdown, setFileDetailsDropdown] = useState(false);
 
     // Reference to the hidden file input element
-    const hiddenFileInputReference = useRef(null);
+    const FileInputReference = useRef(null);
 
-    // When the upload button is clicked, the choose file button in the hidden file input element will be clicked
+    // When the upload button is clicked, user choose file from device
     const uploadFileHandler = () => {
-        hiddenFileInputReference.current.click();
+        FileInputReference.current.click();
     };
 
-    // After user upload a file from their device, display the file details to customers
+    // After user upload a file from their device, display the file details to customers and invoke callback
     const changeFileHandler = (event) => {
         setUploadedFile(event.target.files[0]);
         setFileDetailsDropdown(true);
-    };
-
-    // After user click on the Evaluate button, pass uploaded file object to the parent prop handleFile
-    const submitHandler = () => {
         handleFile(uploadedFile);
-        console.log(uploadedFile);
     };
 
     return (
@@ -55,16 +51,13 @@ function Dropzone({ handleFile }) {
                 {fileDetailsDropdown && (
                     <div>
                         <p>Filename: {uploadedFile.name}</p>
-                        <button type="button" onClick={submitHandler}>
-                            Evaluate
-                        </button>
                     </div>
                 )}
                 <input
                     type="file"
                     name="file"
                     onChange={changeFileHandler}
-                    ref={hiddenFileInputReference}
+                    ref={FileInputReference}
                     style={{ display: 'none' }} // Make the file input element invisible
                 />
             </div>
