@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
@@ -17,7 +18,7 @@ const Wrapper = styled.div`
 /**
  * Dropzone component let users upload their files through the upload button
  */
-function Dropzone() {
+function Dropzone({ handleFile }) {
     // Track uploaded file object to be passed to handleFile Prop
     const [uploadedFile, setUploadedFile] = useState({});
     // Track uploaded file details to be displayed to users
@@ -31,13 +32,15 @@ function Dropzone() {
         hiddenFileInputReference.current.click();
     };
 
-    // After user upload a file from their device, update state data and handle request to backend
+    // After user upload a file from their device, display the file details to customers
     const changeFileHandler = (event) => {
         setUploadedFile(event.target.files[0]);
         setFileDetailsDropdown(true);
     };
 
+    // After user click on the Evaluate button, pass uploaded file object to the parent prop handleFile
     const submitHandler = () => {
+        handleFile(uploadedFile);
         console.log(uploadedFile);
     };
 
@@ -68,5 +71,14 @@ function Dropzone() {
         </Wrapper>
     );
 }
+
+Dropzone.propTypes = {
+    /** handleFile is a function from parent component that takes uploaded file object.  */
+    handleFile: PropTypes.func,
+};
+
+Dropzone.defaultProps = {
+    handleFile: () => {},
+};
 
 export default Dropzone;
