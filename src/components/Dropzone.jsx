@@ -35,9 +35,10 @@ function Dropzone({ handleFile }) {
 
     // After user upload a file from their device, display the file details to customers and invoke callback
     const changeFileHandler = (event) => {
+        event.preventDefault();
         setUploadedFile(event.target.files[0]);
+        handleFile(event.target.files[0]);
         setFileDetailsDropdown(true);
-        handleFile(uploadedFile);
     };
 
     return (
@@ -56,9 +57,9 @@ function Dropzone({ handleFile }) {
                 <input
                     type="file"
                     name="file"
-                    onChange={changeFileHandler}
                     ref={FileInputReference}
                     style={{ display: 'none' }} // Make the file input element invisible
+                    onChange={changeFileHandler}
                 />
             </div>
         </Wrapper>
