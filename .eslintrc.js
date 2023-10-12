@@ -1,12 +1,5 @@
 module.exports = {
-    extends: [
-        'react-app',
-        'react-app/jest',
-        'airbnb',
-        'airbnb/hooks',
-        'plugin:testing-library/react',
-        'plugin:prettier/recommended',
-    ],
+    extends: ['react-app', 'react-app/jest', 'airbnb', 'airbnb/hooks', 'plugin:testing-library/react', 'plugin:prettier/recommended', 'plugin:storybook/recommended'],
     plugins: ['react', 'jest'],
     env: {
         browser: true,
