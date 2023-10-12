@@ -9,7 +9,11 @@ Component documentation
 ### Storybook
 npm run storybook
 
-#### Storybook Argtypes
+**ArgTypes**  
 https://storybook.js.org/docs/react/api/arg-types
 
+**Stories for multiple components**      
+https://storybook.js.org/docs/react/writing-stories/stories-for-multiple-components
 
+**Work with React Context**  
+https://johnclarke73.medium.com/mocking-react-context-in-storybook-bb57304f2f6c  
