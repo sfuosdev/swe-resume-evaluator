@@ -28,7 +28,7 @@ function Dropzone({ handleFile }) {
     // Reference to the hidden file input element
     const FileInputReference = useRef(null);
 
-    // When the upload button is clicked, user choose file from device
+    // When the upload button is clicked, the "choose file" button inside the referenced input element is clicked, user then choose file from device
     const uploadFileHandler = () => {
         FileInputReference.current.click();
     };
