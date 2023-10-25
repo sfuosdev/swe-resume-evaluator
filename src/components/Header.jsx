@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
+import LoginModal from './LoginModal';
 
 const Wrapper = styled.div`
     display: flex;
@@ -12,12 +13,21 @@ const Wrapper = styled.div`
 `;
 
 function Header() {
+    const [isOn, setIsOn] = useState(false);
+    const OnClose = () => {
+        setIsOn(false);
+    };
+
     return (
         <Wrapper>
             <div />
-            <button type="button" onClick={() => null}>
+            <button type="button" onClick={() => setIsOn(true)}>
                 Login
             </button>
+            <LoginModal isOn={isOn} width={250} height={270} OnClose={OnClose}>
+                <p>Login</p>
+                <p>Sign up</p>
+            </LoginModal>
         </Wrapper>
     );
 }
