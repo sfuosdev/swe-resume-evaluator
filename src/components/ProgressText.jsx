@@ -56,7 +56,8 @@ const LineContainer = styled.div`
  */
 function ProgressText({ loading = true }) {
     // eslint-disable-next-line no-undef, prettier/prettier
-    const textLines = useMemo(() => [
+    const textLines = useMemo(
+        () => [
             '\u200B', // Zero-Width Space (invisible)
             '\u200B',
             'This is the 1st line...',

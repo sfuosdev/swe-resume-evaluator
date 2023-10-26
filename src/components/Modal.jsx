@@ -22,8 +22,8 @@ const ModalBox = styled.div`
     right: 0;
 `;
 
-/** Modal to login/signup in the main page */
-function LoginModal({ isOn, width, height, OnClose, children }) {
+/** a simple Modal component */
+function Modal({ isOn, width, height, OnClose, children }) {
     return (
         <DarkBG
             style={isOn ? { display: 'block' } : { display: 'none' }}
@@ -36,7 +36,7 @@ function LoginModal({ isOn, width, height, OnClose, children }) {
                 data-testid="modal"
                 onClick={(e) => e.stopPropagation()}
             >
-                <h1>LoginModal</h1>
+                <h1>Modal</h1>
                 <button type="button" onClick={OnClose}>
                     Close
                 </button>
@@ -46,7 +46,7 @@ function LoginModal({ isOn, width, height, OnClose, children }) {
     );
 }
 
-LoginModal.propTypes = {
+Modal.propTypes = {
     isOn: PropTypes.bool,
     width: PropTypes.number,
     height: PropTypes.number,
@@ -54,7 +54,7 @@ LoginModal.propTypes = {
     OnClose: PropTypes.func,
 };
 
-LoginModal.defaultProps = {
+Modal.defaultProps = {
     isOn: true,
     width: 250,
     height: 270,
@@ -62,4 +62,4 @@ LoginModal.defaultProps = {
     OnClose: null,
 };
 
-export default LoginModal;
+export default Modal;

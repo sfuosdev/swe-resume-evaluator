@@ -2,8 +2,8 @@ const express = require('express');
 const authRouter = require('./routes/auth/auth');
 const bodyParser = require('body-parser');
 
-const swaggerJsdoc = require("swagger-jsdoc");
-const swaggerUi = require("swagger-ui-express");
+const swaggerJsdoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
 
 const app = express();
 
@@ -12,21 +12,21 @@ app.use(bodyParser.json());
 
 const options = {
     swaggerDefinition: {
-        openapi: "3.0.3",
+        openapi: '3.0.3',
         info: {
-          title: "SWE Resume Evaluator Express API with Swagger",
-          version: "0.1.0",
-          description: "API with Express JS",
+            title: 'SWE Resume Evaluator Express API with Swagger',
+            version: '0.1.0',
+            description: 'API with Express JS',
         },
     },
-    apis: ["./routes/*.js"],
+    apis: ['./routes/*.js'],
 };
-  
+
 const specs = swaggerJsdoc(options);
 app.use(
-  "/api-docs",
-  swaggerUi.serve,
-  swaggerUi.setup(specs, { explorer: true })
+    '/api-docs',
+    swaggerUi.serve,
+    swaggerUi.setup(specs, { explorer: true }),
 );
 
 app.use('/auth', authRouter);
