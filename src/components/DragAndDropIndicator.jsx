@@ -1,8 +1,9 @@
-import React from 'react';
+/* eslint-disable prettier/prettier */
+/* eslint-disable import/no-extraneous-dependencies */
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import PropTypes from 'prop-types';
-import { useDrop } from 'react-dnd';
-import { NativeTypes } from 'react-dnd-html5-backend';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
 const DarkMask = styled.div`
     position: fixed;
@@ -21,61 +22,55 @@ const IndicatorBox = styled.div`
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    padding: 20px;
-    background-color: white;
-    border: 2px dashed #cccccc;
-    border-radius: 5px;
+    padding: 70px;
+    background-color: #8e44ad;
+    border: 2px dashed #ffffff;
+    border-radius: 10px;
     z-index: 2;
     display: ${({ isDragging }) => (isDragging ? 'block' : 'none')};
+    pointer-events: none;
+
+    color: #ffffff;
+    font-size: 28px;
+    text-align: center;
+    text-transform: uppercase;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 `;
 
-const DropArea = styled.div`
-    width: 300px;
-    height: 200px;
-    border: 2px dashed #cccccc;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: white;
-`;
-
-const DragAndDropIndicator = () => {
+/**
+ * Display message box and cover the darkening mask when the user drag file over the screen
+ * Invisible in default state
+ * @returns DragAndDropIndicator
+ */
+function DragAndDropIndicator() {
     const [isDragging, setIsDragging] = useState(false);
-
-    const [, drop] = useDrop({
-        accept: [NativeTypes.FILE],
-        drop(item, monitor) {
-            // Handle the file drop here if needed
-            // For now, we'll just update the state to indicate that a file was dropped.
-            setIsDragging(false);
-        },
-        collect: (monitor) => ({
-            isOver: !!monitor.isOver(),
-        }),
-    });
 
     const handleDragEnter = () => {
         setIsDragging(true);
     };
 
     const handleDragLeave = () => {
-        setIsDragging(false);
+      setIsDragging(false);
     };
 
     return (
         <div>
-            <DarkMask
-                isDragging={isDragging}
-                onDragEnter={handleDragEnter}
-                onDragLeave={handleDragLeave}
-            >
-                <IndicatorBox isDragging={isDragging}>
-                    Drop your file here
-                </IndicatorBox>
-            </DarkMask>
-            <DropArea ref={drop}>{/* Your content here */}</DropArea>
+            <DndProvider backend={HTML5Backend}>
+                <DarkMask
+                    data-testid="dark-mask"
+                    isDragging={isDragging}
+                    onDragEnter={handleDragEnter}
+                    onDragLeave={handleDragLeave}
+                >
+                    <IndicatorBox
+                        isDragging={isDragging}
+                    >
+                        Drop your file here
+                    </IndicatorBox>
+                </DarkMask>
+            </DndProvider>
         </div>
     );
-};
+}
 
 export default DragAndDropIndicator;
