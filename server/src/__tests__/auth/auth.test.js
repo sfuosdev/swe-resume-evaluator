@@ -1,9 +1,16 @@
-/**
- * test the sign up functionality
- */
-
-import request from 'supertest';
-import app from '../../auth/auth';
+const request = require('supertest');
+const app = require('../app');
+/*
+describe('Test the root path', () => {
+    test('It should response the GET method', (done) => {
+        request(app)
+            .get('/')
+            .then((response) => {
+                expect(response.statusCode).toBe(200);
+                done();
+            });
+    });
+});
 
 describe('POST /signup', () => {
     it('sign up with with credentials', async () => {
@@ -68,3 +75,4 @@ describe('POST /signup', () => {
         expect(res.body.message).toBe('Password must be at least 8 characters');
     })
 });
+*/

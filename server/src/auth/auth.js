@@ -1,14 +1,27 @@
-/* 
-    signUp.js
-    API that users will sign up with their email address, user name, and password through firebase
+require('dotenv').config();
+
+const express = require('express');
+const router = express.Router();
+const firebase = require('firebase-admin');
+
+/*
+    get api key from firebase
 */
+const fbAdmin = firebase.initializeApp({
+    credential: firebase.credential.applicationDefault()
+});
 
-import app from './auth';
-import { getAuth, createUserWithEmailAndPassword, getIdToken } from 'firebase/auth';
-import { doc, setDoc, getDoc, getFirestore} from 'firebase/firestore';
-
-const auth = getAuth();
-const db = getFirestore();
+async function checkUserInFirebase(email) {
+    return new Promise((resolve) => {
+        fbAdmin.auth().getUserByEmail(email)
+            .then((user) => {
+                resolve(true);
+            })
+            .catch((err) => {
+                resolve(false);
+            });
+    });
+}
 
 /** 
  * @param {json} req - request body
@@ -27,7 +40,7 @@ const db = getFirestore();
     * status - number
  * */ 
 
-app.post('/signup', async (req, res) => { 
+router.post('/signup', async (req, res) => { 
     try {
         const { email, username, password } = req.body;
 
@@ -57,35 +70,25 @@ app.post('/signup', async (req, res) => {
             });
         }
 
-        // check if the user already exists
-        const userRef = doc(db, "username", username);
-        const userDoc = await getDoc(userRef);
-
-        // if the user already exists, it returns json object that user is already exists.
-        if (userDoc.exists()) {
+        const alreadyExist = await checkUserInFirebase(email);
+        if (alreadyExist) {
             return res.status(400).json({
-                message: "Username already exists",
+                message: "User already exists with the given email address",
                 status: 400
             });
         }
-        
-        // if the user does not exist, it creates new user
-        const userCredential = await createUserWithEmailAndPassword(auth, email, password); 
-        
-        // Signed in 
-        const user = userCredential.user;
+
+        const user = await fbAdmin.auth().createUser({
+            username,
+            email,
+            password
+        })
 
         // check the user 
         console.log(user);
 
         // create a user token 
-        const userToken = await getIdToken(user);  
-
-        // store the user name into firebase 
-        const newUserRef = doc(db, "user", user.uid);  
-        await setDoc(newUserRef, {
-            username: username
-        });
+        const userToken = await fbAdmin.auth().createCustomToken(user.uid);  
 
         // return successful registration response 
         return res.status(200).json({
@@ -102,3 +105,5 @@ app.post('/signup', async (req, res) => {
         });
     }
 });
+
+module.exports = router;
