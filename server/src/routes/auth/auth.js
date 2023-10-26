@@ -23,23 +23,53 @@ async function checkUserInFirebase(email) {
     });
 }
 
-/** 
- * @param {json} req - request body
- * requested body will contain the following fields:
-    * email - string
-    * username - string
-    * password - string
- * @return {json} res - response body
- * response body will contain the following fields:
- * if successful:
-    * message - string
-    * status - number
-    * user_token - string
-* if unsuccessful:
-    * message - string
-    * status - number
- * */ 
-
+/**
+ * @swagger
+ * paths:
+ *  /signup:
+ *   post:
+ *     summary: Create a new user if the given credentials are valid
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *              properties:
+ *                username:
+ *                  type: string
+ *                email:
+ *                  type: string
+ *                password:
+ *                  type: string
+ *                  description: The password must have at least 8 characters
+ *     responses:
+ *       200:
+ *         description: The created book.
+ *         content:
+ *           application/json:
+ *             schema:
+ *              properties:
+ *                message:
+ *                  type: string
+ *                status:
+ *                  type: integer
+ *                  default: 200
+ *                user_token:
+ *                  type: string
+ *                  description: The password must have at least 8 characters
+ *       400:
+ *         description: Invalid Request Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *              properties:
+ *                message:
+ *                  type: string
+ *                status:
+ *                  type: integer
+ *                  default: 400
+ */
 router.post('/signup', async (req, res) => { 
     try {
         const { email, username, password } = req.body;
