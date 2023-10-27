@@ -1,14 +1,9 @@
 const express = require('express');
-<<<<<<< HEAD
 const authRouter = require('./routes/auth/auth');
 const bodyParser = require('body-parser');
 
 const swaggerJsdoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
-=======
-const authRouter = require('./auth/auth');
-const bodyParser = require('body-parser');
->>>>>>> f08453e (before merging)
 
 const app = express();
 

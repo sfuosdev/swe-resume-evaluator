@@ -1,5 +1,3 @@
-/* eslint-disable prettier/prettier */
-/* eslint-disable import/no-extraneous-dependencies */
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { DndProvider } from 'react-dnd';
@@ -50,7 +48,7 @@ function DragAndDropIndicator() {
     };
 
     const handleDragLeave = () => {
-      setIsDragging(false);
+        setIsDragging(false);
     };
 
     return (
@@ -62,9 +60,7 @@ function DragAndDropIndicator() {
                     onDragEnter={handleDragEnter}
                     onDragLeave={handleDragLeave}
                 >
-                    <IndicatorBox
-                        isDragging={isDragging}
-                    >
+                    <IndicatorBox isDragging={isDragging}>
                         Drop your file here
                     </IndicatorBox>
                 </DarkMask>

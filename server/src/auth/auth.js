@@ -1,9 +1,9 @@
 require('dotenv').config();
 
 const express = require('express');
-const router = express.Router();
 const firebase = require('firebase-admin');
 
+const router = express.Router();
 /*
     get api key from firebase
 */
@@ -16,10 +16,10 @@ async function checkUserInFirebase(email) {
         fbAdmin
             .auth()
             .getUserByEmail(email)
-            .then((user) => {
+            .then(() => {
                 resolve(true);
             })
-            .catch((err) => {
+            .catch(() => {
                 resolve(false);
             });
     });
@@ -85,9 +85,6 @@ router.post('/signup', async (req, res) => {
             email,
             password,
         });
-
-        // check the user
-        console.log(user);
 
         // create a user token
         const userToken = await fbAdmin.auth().createCustomToken(user.uid);
