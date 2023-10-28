@@ -18,8 +18,8 @@ const Wrapper = styled.div`
 /**
  * Dropzone component let users upload their files through the upload button
  */
-function Dropzone({ handleFile }) {
-    // Track uploaded file object to be passed to handleFile Prop
+function Dropzone({ onFileChange }) {
+    // Track uploaded file object to be passed to onFileChange Prop
     const [uploadedFile, setUploadedFile] = useState({});
 
     // Track uploaded file details to be displayed to users
@@ -37,7 +37,7 @@ function Dropzone({ handleFile }) {
     const changeFileHandler = (event) => {
         event.preventDefault();
         setUploadedFile(event.target.files[0]);
-        handleFile(event.target.files[0]);
+        onFileChange(event.target.files[0]);
         setFileDetailsDropdown(true);
     };
 
@@ -60,6 +60,7 @@ function Dropzone({ handleFile }) {
                     ref={FileInputReference}
                     style={{ display: 'none' }} // Make the file input element invisible
                     onChange={changeFileHandler}
+                    data-testid="fileInput"
                 />
             </div>
         </Wrapper>
@@ -67,12 +68,12 @@ function Dropzone({ handleFile }) {
 }
 
 Dropzone.propTypes = {
-    /** handleFile is a function from parent component that takes uploaded file object.  */
-    handleFile: PropTypes.func,
+    /** onFileChange is a function from parent component that takes uploaded file object.  */
+    onFileChange: PropTypes.func,
 };
 
 Dropzone.defaultProps = {
-    handleFile: () => {},
+    onFileChange: () => {},
 };
 
 export default Dropzone;

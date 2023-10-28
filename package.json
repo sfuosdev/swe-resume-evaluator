@@ -1,89 +1,91 @@
 {
-    "name": "swe-resume-evaluator",
-    "version": "0.1.0",
-    "private": true,
-    "dependencies": {
-      "python-shell": "^5.0.0",
-      "react": "^18.2.0",
-      "react-dnd": "^16.0.1",
-      "react-dnd-html5-backend": "^16.0.1",
-      "react-dom": "^18.2.0",
-      "react-scripts": "5.0.1",
-      "styled-components": "^5.0.0",
-      "web-vitals": "^2.1.4"
-    },
-    "devDependencies": {
-      "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
-      "@storybook/addon-essentials": "^7.4.6",
-      "@storybook/addon-interactions": "^7.4.6",
-      "@storybook/addon-links": "^7.4.6",
-      "@storybook/addon-onboarding": "^1.0.8",
-      "@storybook/blocks": "^7.4.6",
-      "@storybook/preset-create-react-app": "^7.4.6",
-      "@storybook/react": "^7.4.6",
-      "@storybook/react-webpack5": "^7.4.6",
-      "@storybook/testing-library": "^0.2.2",
-      "@testing-library/jest-dom": "^5.17.0",
-      "@testing-library/react": "^13.4.0",
-      "@testing-library/user-event": "^13.5.0",
-      "babel-plugin-named-exports-order": "^0.0.2",
-      "customize-cra": "^1.0.0",
-      "eslint": "^8.40.0",
-      "eslint-config-airbnb": "^19.0.4",
-      "eslint-config-prettier": "^8.8.0",
-      "eslint-plugin-prettier": "^4.2.1",
-      "eslint-plugin-storybook": "^0.6.15",
-      "eslint-plugin-testing-library": "^5.11.0",
-      "gh-pages": "^6.0.0",
-      "husky": "^8.0.3",
-      "jest": "^27.5.1",
-      "jest-when": "^3.5.2",
-      "lint-staged": "^13.3.0",
-      "prettier": "^2.8.8",
-      "prop-types": "^15.8.1",
-      "react-app-rewired": "^2.2.1",
-      "react-dnd-test-backend": "^16.0.1",
-      "storybook": "^7.4.6",
-      "webpack": "^5.88.2"
-    },
-    "scripts": {
-        "preinstall": "./preinstall.sh",
-        "predeploy": "npm run build",
-        "deploy": "gh-pages -d build",
-        "start": "GENERATE_SOURCEMAP=false react-scripts start",
-        "winStart": "set \"GENERATE_SOURCEMAP=false\" && react-scripts start",
-        "build": "GENERATE_SOURCEMAP=false react-scripts build",
-        "winBuild": "set \"GENERATE_SOURCEMAP=false\" && react-scripts build",
-        "test": "GENERATE_SOURCEMAP=false react-scripts test",
-        "winTest": "set \"GENERATE_SOURCEMAP=false\" && react-scripts test",
-        "eject": "react-scripts eject",
-        "prettier": "prettier --write src server/src",
-        "lint": "eslint src/**/*.js{,x} server/src/**/*.js",
-        "lint:fix": "eslint --fix src/**/*.js{,x} server/src/**/*.js",
-        "docs": "jsdoc -c jsdoc.conf.json",
-        "prepare": "husky install"
-    },
-    "eslintConfig": {
-        "extends": [
-            "react-app",
-            "react-app/jest"
-        ]
-    },
-    "jest": {
-        "transformIgnorePatterns": [
-            "node_modules/(?!@testing-library)"
-        ]
-    },
-    "browserslist": {
-        "production": [
-            ">0.2%",
-            "not dead",
-            "not op_mini all"
-        ],
-        "development": [
-            "last 1 chrome version",
-            "last 1 firefox version",
-            "last 1 safari version"
-        ]
-    }
+  "name": "swe-resume-evaluator",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "python-shell": "^5.0.0",
+    "react": "^18.2.0",
+    "react-dnd": "^16.0.1",
+    "react-dnd-html5-backend": "^16.0.1",
+    "react-dom": "^18.2.0",
+    "react-scripts": "5.0.1",
+    "styled-components": "^5.0.0",
+    "web-vitals": "^2.1.4"
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "@storybook/addon-essentials": "^7.4.6",
+    "@storybook/addon-interactions": "^7.4.6",
+    "@storybook/addon-links": "^7.4.6",
+    "@storybook/addon-onboarding": "^1.0.8",
+    "@storybook/blocks": "^7.4.6",
+    "@storybook/preset-create-react-app": "^7.4.6",
+    "@storybook/react": "^7.4.6",
+    "@storybook/react-webpack5": "^7.4.6",
+    "@storybook/testing-library": "^0.2.2",
+    "@testing-library/jest-dom": "^5.17.0",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "babel-plugin-named-exports-order": "^0.0.2",
+    "customize-cra": "^1.0.0",
+    "eslint": "^8.40.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-storybook": "^0.6.15",
+    "eslint-plugin-testing-library": "^5.11.0",
+    "gh-pages": "^6.0.0",
+    "husky": "^8.0.3",
+    "jest": "^27.5.1",
+    "jest-when": "^3.5.2",
+    "lint-staged": "^13.3.0",
+    "prettier": "^2.8.8",
+    "prop-types": "^15.8.1",
+    "react-app-rewired": "^2.2.1",
+    "react-dnd-test-backend": "^16.0.1",
+    "storybook": "^7.4.6",
+    "webpack": "^5.88.2"
+  },
+  "scripts": {
+    "preinstall": "./preinstall.sh",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
+    "start": "GENERATE_SOURCEMAP=false react-scripts start",
+    "winStart": "set \"GENERATE_SOURCEMAP=false\" && react-scripts start",
+    "build": "GENERATE_SOURCEMAP=false react-scripts build",
+    "winBuild": "set \"GENERATE_SOURCEMAP=false\" && react-scripts build",
+    "test": "GENERATE_SOURCEMAP=false react-scripts test",
+    "winTest": "set \"GENERATE_SOURCEMAP=false\" && react-scripts test",
+    "eject": "react-scripts eject",
+    "prettier": "prettier --write src server/src",
+    "lint": "eslint src/**/*.js{,x} server/src/**/*.js",
+    "lint:fix": "eslint --fix src/**/*.js{,x} server/src/**/*.js",
+    "docs": "jsdoc -c jsdoc.conf.json",
+    "prepare": "husky install",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
+  },
+  "eslintConfig": {
+    "extends": [
+        "react-app",
+        "react-app/jest"
+    ]
+  },
+  "jest": {
+    "transformIgnorePatterns": [
+      "node_modules/(?!@testing-library|react-dnd|dnd-core|@react-dnd)"
+    ]
+  },
+  "browserslist": {
+    "production": [
+        ">0.2%",
+        "not dead",
+        "not op_mini all"
+    ],
+    "development": [
+        "last 1 chrome version",
+        "last 1 firefox version",
+        "last 1 safari version"
+    ]
+  }
 }

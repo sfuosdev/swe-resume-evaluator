@@ -1,4 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
 import React from 'react';
 import { render, fireEvent, screen } from '@testing-library/react';
 import DragAndDropIndicator from '../../components/DragAndDropIndicator';
