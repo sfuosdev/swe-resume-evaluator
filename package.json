@@ -67,25 +67,25 @@
   },
   "eslintConfig": {
     "extends": [
-      "react-app",
-      "react-app/jest"
+        "react-app",
+        "react-app/jest"
     ]
   },
   "jest": {
     "transformIgnorePatterns": [
-      "node_modules/(?!@testing-library)"
+      "node_modules/(?!@testing-library|react-dnd|dnd-core|@react-dnd)"
     ]
   },
   "browserslist": {
     "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
+        ">0.2%",
+        "not dead",
+        "not op_mini all"
     ],
     "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
+        "last 1 chrome version",
+        "last 1 firefox version",
+        "last 1 safari version"
     ]
   }
 }

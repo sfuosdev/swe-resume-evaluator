@@ -1,9 +1,9 @@
 require('dotenv').config();
 
 const express = require('express');
+const router = express.Router();
 const firebase = require('firebase-admin');
 
-const router = express.Router();
 /*
     get api key from firebase
 */
@@ -16,32 +16,64 @@ async function checkUserInFirebase(email) {
         fbAdmin
             .auth()
             .getUserByEmail(email)
-            .then(() => {
+            .then((user) => {
                 resolve(true);
             })
-            .catch(() => {
+            .catch((err) => {
                 resolve(false);
             });
     });
 }
 
 /**
- * @param {json} req - request body
- * requested body will contain the following fields:
- * email - string
- * username - string
- * password - string
- * @return {json} res - response body
- * response body will contain the following fields:
- * if successful:
- * message - string
- * status - number
- * user_token - string
- * if unsuccessful:
- * message - string
- * status - number
- * */
-
+ * @swagger
+ * paths:
+ *  /signup:
+ *   post:
+ *     summary: Create a new user if the given credentials are valid
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *              properties:
+ *                username:
+ *                  type: string
+ *                email:
+ *                  type: string
+ *                password:
+ *                  type: string
+ *                  description: The password must have at least 8 characters
+ *     responses:
+ *       200:
+ *         description: Successful request, a new user is created and a user token is returned.
+ *         content:
+ *           application/json:
+ *             schema:
+ *              properties:
+ *                message:
+ *                  type: string
+ *                  default: 'ok'
+ *                status:
+ *                  type: integer
+ *                  default: 200
+ *                user_token:
+ *                  type: string
+ *                  description: The password must have at least 8 characters
+ *       400:
+ *         description: Invalid request, the given fields are not valid or the user already exists.
+ *         content:
+ *           application/json:
+ *             schema:
+ *              properties:
+ *                message:
+ *                  type: string
+ *                  default: '[ERROR_MESSAGE]'
+ *                status:
+ *                  type: integer
+ *                  default: 400
+ */
 router.post('/signup', async (req, res) => {
     try {
         const { email, username, password } = req.body;
