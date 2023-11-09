@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
@@ -24,7 +25,7 @@ const IndicatorBox = styled.div`
     background-color: #8e44ad;
     border: 2px dashed #ffffff;
     border-radius: 10px;
-    z-index: 2;
+    z-index: 5;
     display: ${({ isDragging }) => (isDragging ? 'block' : 'none')};
     pointer-events: none;
 
@@ -40,15 +41,31 @@ const IndicatorBox = styled.div`
  * Invisible in default state
  * @returns DragAndDropIndicator
  */
-function DragAndDropIndicator() {
+function DragAndDropIndicator({ onFileChange }) {
     const [isDragging, setIsDragging] = useState(false);
+    const [darkMaskZIndex, setDarkMaskZIndex] = useState(1);
+    const FileInputReference = useRef(null);
 
     const handleDragEnter = () => {
         setIsDragging(true);
+        setDarkMaskZIndex(3);
     };
 
     const handleDragLeave = () => {
         setIsDragging(false);
+        setDarkMaskZIndex(1);
+    };
+
+    const handleDragOver = (event) => {
+        event.preventDefault();
+    };
+
+    const handleDrop = (event) => {
+        event.preventDefault();
+        const droppedFile = event.dataTransfer.files[0];
+        onFileChange(droppedFile);
+        setIsDragging(false);
+        setDarkMaskZIndex(1);
     };
 
     return (
@@ -56,17 +73,36 @@ function DragAndDropIndicator() {
             <DndProvider backend={HTML5Backend}>
                 <DarkMask
                     data-testid="dark-mask"
+                    style={{ zIndex: darkMaskZIndex }}
                     isDragging={isDragging}
                     onDragEnter={handleDragEnter}
                     onDragLeave={handleDragLeave}
+                    onDragOver={handleDragOver}
+                    onDrop={handleDrop}
                 >
                     <IndicatorBox isDragging={isDragging}>
                         Drop your file here
+                        <input
+                            type="file"
+                            name="file"
+                            ref={FileInputReference}
+                            style={{ display: 'none' }}
+                            data-testid="fileInputByDrag"
+                        />
                     </IndicatorBox>
                 </DarkMask>
             </DndProvider>
         </div>
     );
 }
+
+DragAndDropIndicator.propTypes = {
+    /** onFileChange is a function from parent component that takes uploaded file object.  */
+    onFileChange: PropTypes.func,
+};
+
+DragAndDropIndicator.defaultProps = {
+    onFileChange: () => {},
+};
 
 export default DragAndDropIndicator;
