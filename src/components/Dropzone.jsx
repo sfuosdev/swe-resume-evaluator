@@ -45,7 +45,14 @@ function Dropzone({ onFileChange }) {
         <Wrapper>
             <div>
                 <div>
-                    <button type="button" onClick={uploadFileHandler}>
+                    <button
+                        type="button"
+                        onClick={uploadFileHandler}
+                        style={{
+                            zIndex: 2,
+                            position: 'relative',
+                        }}
+                    >
                         Upload
                     </button>
                 </div>
