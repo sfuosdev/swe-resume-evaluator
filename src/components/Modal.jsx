@@ -1,6 +1,7 @@
-import React from 'react';
+import { React, useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import LoginSignupView from './LoginSignupView';
 
 const DarkBG = styled.div`
     position: absolute;
@@ -22,8 +23,24 @@ const ModalBox = styled.div`
     right: 0;
 `;
 
+const CloseButton = styled.button`
+    position: absolute;
+    top: 10px;
+    right: 5px;
+    background: none;
+    border: none;
+    font-size: 14px;
+    cursor: pointer;
+`;
+
 /** a simple Modal component */
 function Modal({ isOn, width, height, OnClose, children }) {
+    const [isLoginView, setLoginView] = useState(true);
+
+    const toggleView = (newIsLogin) => {
+        setLoginView(newIsLogin);
+    };
+
     return (
         <DarkBG
             style={isOn ? { display: 'block' } : { display: 'none' }}
@@ -36,11 +53,15 @@ function Modal({ isOn, width, height, OnClose, children }) {
                 data-testid="modal"
                 onClick={(e) => e.stopPropagation()}
             >
-                <h1>Modal</h1>
-                <button type="button" onClick={OnClose}>
-                    Close
-                </button>
-                {children}
+                <CloseButton type="button" onClick={OnClose}>
+                    X
+                </CloseButton>
+                {children || (
+                    <LoginSignupView
+                        isLogin={isLoginView}
+                        toggleView={toggleView}
+                    />
+                )}
             </ModalBox>
         </DarkBG>
     );
@@ -57,7 +78,7 @@ Modal.propTypes = {
 Modal.defaultProps = {
     isOn: true,
     width: 250,
-    height: 270,
+    height: 300,
     children: null,
     OnClose: null,
 };

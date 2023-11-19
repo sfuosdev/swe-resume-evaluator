@@ -26,7 +26,7 @@ describe('Modal', () => {
         expect(onClose).toHaveBeenCalledTimes(0);
         expect(screen.getByTestId('modal')).toHaveStyle('width: 350px');
         expect(screen.getByTestId('modal')).toHaveStyle('height: 370px');
-        expect(screen.getByText('Close')).toBeInTheDocument();
+        expect(screen.getByText('X')).toBeInTheDocument();
     });
 
     it('should be closed when close button is clicked', () => {
@@ -39,7 +39,7 @@ describe('Modal', () => {
             />,
         );
 
-        const button = screen.getByText('Close');
+        const button = screen.getByText('X');
         userEvent.click(button);
         expect(onClose).toBeCalledTimes(1);
     });
