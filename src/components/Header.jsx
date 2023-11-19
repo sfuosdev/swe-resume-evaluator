@@ -24,10 +24,7 @@ function Header() {
             <button type="button" onClick={() => setIsOn(true)}>
                 Login
             </button>
-            <Modal isOn={isOn} width={250} height={270} OnClose={OnClose}>
-                <p>Login</p>
-                <p>Sign up</p>
-            </Modal>
+            <Modal isOn={isOn} width={250} height={300} OnClose={OnClose} />
         </Wrapper>
     );
 }
