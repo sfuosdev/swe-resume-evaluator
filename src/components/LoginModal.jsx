@@ -33,8 +33,8 @@ const CloseButton = styled.button`
     cursor: pointer;
 `;
 
-/** a simple Modal component */
-function Modal({ isOn, width, height, OnClose, children }) {
+/** a simple LoginModal component */
+function LoginModal({ isOn, width, height, OnClose, children }) {
     const [isLoginView, setLoginView] = useState(true);
 
     const toggleView = (newIsLogin) => {
@@ -67,7 +67,7 @@ function Modal({ isOn, width, height, OnClose, children }) {
     );
 }
 
-Modal.propTypes = {
+LoginModal.propTypes = {
     isOn: PropTypes.bool,
     width: PropTypes.number,
     height: PropTypes.number,
@@ -75,7 +75,7 @@ Modal.propTypes = {
     OnClose: PropTypes.func,
 };
 
-Modal.defaultProps = {
+LoginModal.defaultProps = {
     isOn: true,
     width: 250,
     height: 300,
@@ -83,4 +83,4 @@ Modal.defaultProps = {
     OnClose: null,
 };
 
-export default Modal;
+export default LoginModal;

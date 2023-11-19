@@ -1,11 +1,10 @@
 const request = require('supertest');
-const app = require('../../app');
-// const sample = require('../../../resources/sample_resume.pdf');
+const app = require('../../../app');
 
 const temp = {
     user_id: 'sample_user_id',
     resume: 'sample',
-}
+};
 
 describe('POST /resume', () => {
     it('be successful if pdf is uploaded and api is called', async () => {
@@ -13,6 +12,6 @@ describe('POST /resume', () => {
 
         expect(res.status).toBe(200);
         expect(res.body.status).toBe(200);
-        expect(res.body.message).toBe("OK");
-    })
-})
+        expect(res.body.message).toBe('OK');
+    });
+});

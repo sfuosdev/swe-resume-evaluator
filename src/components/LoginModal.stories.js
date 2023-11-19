@@ -1,9 +1,9 @@
-import Modal from './Modal';
+import LoginModal from './LoginModal';
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
-    title: 'Modal',
-    component: Modal,
+    title: 'LoginModal',
+    component: LoginModal,
     tags: ['autodocs'],
     parameters: {
         docs: {

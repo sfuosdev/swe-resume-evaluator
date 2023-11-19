@@ -6,14 +6,14 @@ const multer = require('multer');
 // multipart/form-data
 const storage = multer.diskStorage({
     destination: (req, file, callback) => {
-        callback(null, __dirname+'/upload/');
+        callback(null, __dirname + '/upload/');
     },
 
     filename: (req, file, callback) => {
         // change filename to original name
         callback(null, file.originalname);
     },
-})
+});
 
 const upload = multer({ storage: storage });
 
@@ -69,21 +69,21 @@ router.post('/', upload.single('file'), (req, res) => {
     try {
         console.log(req.body);
         console.log(req.file); // req.file = { fieldname, originalname, ..., destination, filename, ...}
-        
+
         return res.status(200).json({
-            message: "OK",
+            message: 'OK',
             status: 200,
             category_matches: {
                 1: {
-                    "category_id": 1234,
-                    "category_name": "software engineer",
-                    "weight_sum": 87
-                 },
+                    category_id: 1234,
+                    category_name: 'software engineer',
+                    weight_sum: 87,
+                },
                 2: {
-                    "category_id": 2222,
-                    "category_name": "business analyst",
-                    "weight_sum": 35
-                }
+                    category_id: 2222,
+                    category_name: 'business analyst',
+                    weight_sum: 35,
+                },
             },
         });
     } catch (error) {
