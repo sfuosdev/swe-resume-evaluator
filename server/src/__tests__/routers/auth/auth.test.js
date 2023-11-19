@@ -1,14 +1,5 @@
 const request = require('supertest');
 const app = require('../../../app');
-const { delay } = require('../../../utils');
-
-const fixture = {
-    userAlreadyInDB: {
-        email: 'test_email@mail.com',
-        username: 'testUser',
-        password: 'test1234',
-    },
-};
 
 jest.mock('../../../firebase', () => ({
     auth: () => {
@@ -16,7 +7,11 @@ jest.mock('../../../firebase', () => ({
             getUserByEmail: (email) => {
                 return new Promise(async (resolve, error) => {
                     if (email == 'test_email@mail.com')
-                        resolve(fixture.userAlreadyInDB);
+                        resolve({
+                            email: 'test_email@mail.com',
+                            username: 'testUser',
+                            password: 'test1234',
+                        });
                     else error(null);
                 });
             },

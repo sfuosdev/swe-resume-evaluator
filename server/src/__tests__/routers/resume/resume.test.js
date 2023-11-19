@@ -1,6 +1,5 @@
 const request = require('supertest');
 const app = require('../../../app');
-// const sample = require('../../../resources/sample_resume.pdf');
 
 const temp = {
     user_id: 'sample_user_id',
