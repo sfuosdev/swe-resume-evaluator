@@ -1,6 +1,6 @@
 const request = require('supertest');
-const app = require('../../app');
-const { delay } = require('../../utils');
+const app = require('../../../app');
+const { delay } = require('../../../utils');
 
 const fixture = {
     userAlreadyInDB: {
@@ -10,40 +10,31 @@ const fixture = {
     },
 };
 
-jest.mock('firebase-admin', () => ({
-    initializeApp: () => {
+jest.mock('../../../firebase', () => ({
+    auth: () => {
         return {
-            auth: () => {
-                return {
-                    getUserByEmail: (email) => {
-                        return new Promise(async (resolve, error) => {
-                            if (email == 'test_email@mail.com')
-                                resolve(fixture.userAlreadyInDB);
-                            else error(null);
-                        });
-                    },
-                    createUser: ({ email, username, password }) => {
-                        return new Promise(async (resolve) => {
-                            resolve({
-                                email,
-                                username,
-                                password,
-                            });
-                        });
-                    },
-                    createCustomToken: () => {
-                        return new Promise(async (resolve) => {
-                            resolve('user_token');
-                        });
-                    },
-                };
+            getUserByEmail: (email) => {
+                return new Promise(async (resolve, error) => {
+                    if (email == 'test_email@mail.com')
+                        resolve(fixture.userAlreadyInDB);
+                    else error(null);
+                });
+            },
+            createUser: ({ email, username, password }) => {
+                return new Promise(async (resolve) => {
+                    resolve({
+                        email,
+                        username,
+                        password,
+                    });
+                });
+            },
+            createCustomToken: () => {
+                return new Promise(async (resolve) => {
+                    resolve('user_token');
+                });
             },
         };
-    },
-    credential: {
-        applicationDefault: () => {
-            return 'credential';
-        },
     },
 }));
 

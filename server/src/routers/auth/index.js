@@ -1,15 +1,6 @@
-require('dotenv').config();
-
+const fbAdmin = require('../../firebase');
 const express = require('express');
 const router = express.Router();
-const firebase = require('firebase-admin');
-
-/*
-    get api key from firebase
-*/
-const fbAdmin = firebase.initializeApp({
-    credential: firebase.credential.applicationDefault(),
-});
 
 async function checkUserInFirebase(email) {
     return new Promise((resolve) => {
