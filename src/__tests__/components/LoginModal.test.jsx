@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import Modal from '../../components/Modal';
+import LoginModal from '../../components/LoginModal';
 
 const onClose = jest.fn();
 
@@ -15,7 +15,7 @@ const props = {
 describe('Modal', () => {
     it('should render with the given props', () => {
         render(
-            <Modal
+            <LoginModal
                 isOn={props.isOn}
                 width={props.width}
                 height={props.height}
@@ -31,7 +31,7 @@ describe('Modal', () => {
 
     it('should be closed when close button is clicked', () => {
         render(
-            <Modal
+            <LoginModal
                 isOn={props.isOn}
                 width={props.width}
                 height={props.height}
@@ -46,7 +46,7 @@ describe('Modal', () => {
 
     it('should be closed when the dark background is clicked', () => {
         render(
-            <Modal
+            <LoginModal
                 isOn={props.isOn}
                 width={props.width}
                 height={props.height}
