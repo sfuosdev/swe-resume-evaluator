@@ -18,8 +18,8 @@ jobs:
           python-version: 3.8
       - name: Install pipenv
         run: pip install pipenv
-        working-directory: python
+        working-directory: server/python
 
       - name: Install Dependencies
         run: pipenv install
-        working-directory: python
+        working-directory: server/python
