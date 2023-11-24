@@ -2,28 +2,41 @@ import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-const Wrapper = styled.div`
-    display: flex;
-    padding: 20px;
-    margin: auto;
-    width: 500px;
-    height: 100px;
-    border-size: 1px;
-    border-width: 2px;
-    border-style: dashed;
-    justify-content: center;
+const UploadButton = styled.button`
+    width: ${(props) => props.width}px;
+    height: ${(props) => props.height}px;
+    position: relative;
+    z-index: 2;
+    font-size: 16px;
+    margin-top: 20px;
+    background-color: white;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 4px;
     align-items: center;
+    border-style: dotted;
+    border-color: grey;
+    transition: background-color 0.3s ease;
+    text-align: center;
+
+    &:hover {
+        background-color: #e6e6e6;
+    }
+
+    & > p {
+        margin: 0;
+        font-weight: ${(props) => (props.uploaded ? 'normal' : 'bold')};
+        color: ${(props) => (props.uploaded ? 'grey' : 'black')};
+        font-size: ${(props) => (props.uploaded ? '14px' : '16px')};
+    }
 `;
 
 /**
  * Dropzone component let users upload their files through the upload button
  */
-function Dropzone({ onFileChange }) {
+function Dropzone({ onFileChange, width, height }) {
     // Track uploaded file object to be passed to onFileChange Prop
-    const [uploadedFile, setUploadedFile] = useState({});
-
-    // Track uploaded file details to be displayed to users
-    const [fileDetailsDropdown, setFileDetailsDropdown] = useState(false);
+    const [uploadedFile, setUploadedFile] = useState(null);
 
     // Reference to the hidden file input element
     const FileInputReference = useRef(null);
@@ -38,49 +51,58 @@ function Dropzone({ onFileChange }) {
         event.preventDefault();
         setUploadedFile(event.target.files[0]);
         onFileChange(event.target.files[0]);
-        setFileDetailsDropdown(true);
     };
 
     return (
-        <Wrapper>
+        <div>
             <div>
-                <div>
-                    <button
-                        type="button"
-                        onClick={uploadFileHandler}
-                        style={{
-                            zIndex: 2,
-                            position: 'relative',
-                        }}
-                    >
-                        Upload
-                    </button>
-                </div>
-                {fileDetailsDropdown && (
-                    <div>
-                        <p>Filename: {uploadedFile.name}</p>
-                    </div>
-                )}
-                <input
-                    type="file"
-                    name="file"
-                    ref={FileInputReference}
-                    style={{ display: 'none' }} // Make the file input element invisible
-                    onChange={changeFileHandler}
-                    data-testid="fileInput"
-                />
+                <UploadButton
+                    type="button"
+                    onClick={uploadFileHandler}
+                    width={width}
+                    height={height}
+                >
+                    {uploadedFile ? (
+                        <p>{uploadedFile.name}</p>
+                    ) : (
+                        <>
+                            <p>
+                                <strong>
+                                    Drag your resume here or click to select
+                                    file
+                                </strong>
+                            </p>
+                            <p style={{ color: 'grey', fontSize: '14px' }}>
+                                only accept .pdf .docx, each file should not
+                                exceed 2mb
+                            </p>
+                        </>
+                    )}
+                </UploadButton>
             </div>
-        </Wrapper>
+            <input
+                type="file"
+                name="file"
+                ref={FileInputReference}
+                style={{ display: 'none' }} // Make the file input element invisible
+                onChange={changeFileHandler}
+                data-testid="fileInput"
+            />
+        </div>
     );
 }
 
 Dropzone.propTypes = {
     /** onFileChange is a function from parent component that takes uploaded file object.  */
     onFileChange: PropTypes.func,
+    width: PropTypes.number,
+    height: PropTypes.number,
 };
 
 Dropzone.defaultProps = {
     onFileChange: () => {},
+    width: 150,
+    height: 150,
 };
 
 export default Dropzone;
