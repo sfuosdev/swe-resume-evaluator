@@ -10,6 +10,7 @@ import NotFoundPage from './containers/NotFoundPage';
 import UploadPage from './containers/UploadPage';
 import Header from './components/Header';
 import Footer from './components/Footer';
+import { ResumeContextProvider } from './context/resumeContext';
 
 const AppWrapper = styled.div`
     display: flex;
@@ -23,24 +24,26 @@ function App() {
         <div className="App">
             <AppWrapper>
                 <Header />
-                <BrowserRouter>
-                    <Routes>
-                        <Route path="/" element={<MainPage />} />
-                        <Route
-                            path="/termAndCondition"
-                            element={<TermAndConditionPage />}
-                        />
-                        <Route path="/upload" element={<UploadPage />} />
-                        <Route path="/loading" element={<LoadingPage />} />
-                        <Route
-                            path="/result/:rId"
-                            element={<ReportingPage />}
-                        />
-                        {/* Exception Handling Page */}
-                        <Route path="*" element={<NotFoundPage />} />
-                    </Routes>
-                    <Footer />
-                </BrowserRouter>
+                <ResumeContextProvider>
+                    <BrowserRouter>
+                        <Routes>
+                            <Route path="/" element={<MainPage />} />
+                            <Route
+                                path="/termAndCondition"
+                                element={<TermAndConditionPage />}
+                            />
+                            <Route path="/upload" element={<UploadPage />} />
+                            <Route path="/loading" element={<LoadingPage />} />
+                            <Route
+                                path="/result/:rId"
+                                element={<ReportingPage />}
+                            />
+                            {/* Exception Handling Page */}
+                            <Route path="*" element={<NotFoundPage />} />
+                        </Routes>
+                    </BrowserRouter>
+                </ResumeContextProvider>
+                <Footer />
             </AppWrapper>
         </div>
     );

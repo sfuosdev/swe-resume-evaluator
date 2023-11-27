@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Dropzone from '../components/Dropzone';
 import DragAndDropIndicator from '../components/DragAndDropIndicator';
+import { useResumeApi } from '../hooks/useResumeAPI';
 
 const Wrapper = styled.div`
     display: flex;
@@ -74,6 +75,7 @@ function UploadPage() {
     // eslint-disable-next-line no-unused-vars
     const [fileUploaded, setFileUploaded] = useState(false);
     const [errorMessage, setErrorMessage] = useState(null);
+    const [fileChange, callApi] = useResumeApi();
 
     const navigate = useNavigate();
 
@@ -87,6 +89,7 @@ function UploadPage() {
     const handleFileChange = (file) => {
         setFileType(file.type);
         setFileUploaded(true);
+        fileChange(file);
 
         if (!allowedFileTypes.includes(file.type)) {
             setErrorMessage(
@@ -99,6 +102,7 @@ function UploadPage() {
 
     const handleAcceptButtonClick = () => {
         if (allowedFileTypes.includes(fileType)) {
+            callApi();
             navigate('/loading');
         } else {
             setErrorMessage(

@@ -49,7 +49,7 @@ const upload = multer({ storage: storage });
  *                  status:
  *                    type: integer
  *                    default: 200
- *                  category_matches:
+ *                  job_matches:
  *                    type: object
  *        400:
  *          description: Unsuccessful upload/request
@@ -73,17 +73,10 @@ router.post('/', upload.single('file'), (req, res) => {
         return res.status(200).json({
             message: 'OK',
             status: 200,
-            category_matches: {
-                1: {
-                    category_id: 1234,
-                    category_name: 'software engineer',
-                    weight_sum: 87,
-                },
-                2: {
-                    category_id: 2222,
-                    category_name: 'business analyst',
-                    weight_sum: 35,
-                },
+            job_matches: {
+                "is_IT": "False",
+                "job_name": "Accountant",
+                "similarity": 5,
             },
         });
     } catch (error) {
