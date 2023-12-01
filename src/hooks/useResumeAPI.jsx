@@ -13,7 +13,7 @@ export const useResumeApi = () => {
             const data = new FormData();
             data.append('file', file);
             try {
-                await fetch('http://localhost:3000/resume', {
+                await fetch('http://localhost:4000/resume', {
                     method: 'POST',
                     body: data,
                 })

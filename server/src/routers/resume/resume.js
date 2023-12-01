@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
+const cors = require('cors');
 
 // req.file = { fieldname, originalname, ..., destination, filename, ...}
 // multipart/form-data
@@ -16,6 +17,8 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage: storage });
+
+router.use(cors());
 
 /**
  * @swagger
