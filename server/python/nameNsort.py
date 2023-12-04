@@ -16,4 +16,4 @@ def renameNsort(fpath: str) -> None:
             os.rename(src, dst) # rename
 
 if __name__ == '__main__':
-    renameNsort("resources/resume_data/") # use the helper
+    renameNsort("./../resources/resume_data/") # use the helper

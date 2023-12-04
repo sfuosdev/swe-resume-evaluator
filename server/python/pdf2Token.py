@@ -25,6 +25,8 @@ def pdf2Token(fpath: str) -> list:
             delList.append(i)
     for index in sorted(delList, reverse=True):
         del doc[index]
+    
+    doc = [i.text for i in doc]
 
     # Return the tokens
     return list(doc)

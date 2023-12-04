@@ -6,6 +6,8 @@ name = "pypi"
 [packages]
 tika = "*"
 spacy = "*"
+pandas = "*"
+nltk = "*"
 
 [dev-packages]
 
