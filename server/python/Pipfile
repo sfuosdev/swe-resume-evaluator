@@ -9,6 +9,7 @@ spacy = "*"
 pandas = "*"
 nltk = "*"
 scikit-learn = "*"
+numpy = "*"
 
 [dev-packages]
 

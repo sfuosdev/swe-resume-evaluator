@@ -96,6 +96,7 @@ def classifier2(new_data: list):
     predictions = classifier.predict(new_data_vectorized)
     job_probabilities = classifier.predict_proba(new_data_vectorized)
     job_score = max(job_probabilities[0])
+    print(job_probabilities)
 
     return(True, str(predictions[0]), job_score*100)
 
