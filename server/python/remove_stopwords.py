@@ -11,23 +11,34 @@ from nltk.corpus import stopwords
 import ast
 import string
 
-# Function to remove stop words from a list of tokens
 def get_stopword_removed_list(tokens):
     stop_words = set(stopwords.words('english'))
 
-    # Remove non-ASCII strings
-    tokens = [token for token in tokens if token.encode('ascii', 'ignore').decode('ascii') == token]
+    # Remove non-ASCII strings and split combined words and symbols
+    cleaned_tokens = []
+    for token in tokens:
+        # Keep only alphabetic characters and digits
+        cleaned_token = ''.join(char for char in token if char.isalnum() or char.isspace())
+        
+        # Split combined words and symbols
+        cleaned_tokens.extend(cleaned_token.split())
 
-    # Remove commas, newlines, and stopwords
-    tokens = [
-        token.lower() for token in tokens
-        if token.lower() not in stop_words and token not in string.punctuation and token.strip()
+    # Remove stopwords, convert to lowercase, and keep numbers
+    cleaned_tokens = [
+        token.lower() for token in cleaned_tokens
+        if token.lower() not in stop_words and token.isnumeric() == False
     ]
 
     # Replace "nt" with "not"
-    tokens = ['not' if token.lower() == 'nt' else token for token in tokens]
+    cleaned_tokens = ['not' if token.lower() == 'nt' else token for token in cleaned_tokens]
 
-    return tokens
+    return cleaned_tokens
+
+def isIT(job_cat):
+    if job_cat not in ["ACCOUNTANT", "DESIGNER", "HR"]:
+        return "IT"
+    else:
+        return job_cat
 
 def remove_stopwords(csv_filepath: str):
 
@@ -43,6 +54,9 @@ def remove_stopwords(csv_filepath: str):
 
     # Apply the get_stopword_removed_list function to the "Tokens" column
     df['Tokens'] = df['Tokens'].apply(ast.literal_eval).apply(get_stopword_removed_list)
+
+    # bind all IT jobs into one
+    df['IT'] = df['Job_cat'].apply(isIT)
 
     # Save the updated Token column DataFrame to a CSV file
     df.to_csv("./../resources/stopword_removed_tokens.csv", index=False)
