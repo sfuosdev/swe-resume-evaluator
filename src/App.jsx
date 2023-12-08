@@ -39,8 +39,8 @@ function App() {
                         {/* Exception Handling Page */}
                         <Route path="*" element={<NotFoundPage />} />
                     </Routes>
+                    <Footer />
                 </BrowserRouter>
-                <Footer />
             </AppWrapper>
         </div>
     );
