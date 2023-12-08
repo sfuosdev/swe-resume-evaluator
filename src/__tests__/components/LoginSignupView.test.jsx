@@ -1,7 +1,18 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { rest } from 'msw';
+import { setupServer } from 'msw/lib/node';
 import LoginSignupView from '../../components/LoginSignupView';
+
+const server = setupServer(
+    rest.get('/auth/signup', (req, res, ctx) => {
+        return res(ctx.status(200), ctx.json({ data: 'Successful' }));
+    }),
+);
+
+beforeAll(() => server.listen());
+afterAll(() => server.resetHandlers(), server.close());
 
 const toggleview = jest.fn();
 
@@ -49,5 +60,14 @@ describe('LoginSignupView', () => {
         );
         // Check if toggleView has been called and isLogin is set to false
         expect(toggleview).toHaveBeenCalledWith(true);
+    });
+    it('displays data from API', async () => {
+        render(
+            <LoginSignupView
+                isLogin={props.isLogin}
+                toggleView={props.toggleView}
+            />,
+        );
+        expect(await screen.findByText('Successful')).toBeInTheDocument();
     });
 });

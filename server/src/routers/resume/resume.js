@@ -1,15 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
-const cors = require('cors');
 
 // req.file = { fieldname, originalname, ..., destination, filename, ...}
 // multipart/form-data
 const storage = multer.diskStorage({
-    destination: (req, file, callback) => {
-        callback(null, __dirname + '/upload/');
-    },
-
     filename: (req, file, callback) => {
         // change filename to original name
         callback(null, file.originalname);
@@ -17,8 +12,6 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage: storage });
-
-router.use(cors());
 
 /**
  * @swagger
@@ -70,9 +63,8 @@ router.use(cors());
  */
 router.post('/', upload.single('file'), (req, res) => {
     try {
-        console.log(req.body);
+        res.set('Access-Control-Allow-Origin', '*');
         console.log(req.file); // req.file = { fieldname, originalname, ..., destination, filename, ...}
-
         return res.status(200).json({
             message: 'OK',
             status: 200,

@@ -66,7 +66,9 @@ async function checkUserInFirebase(email) {
  *                  default: 400
  */
 router.post('/signup', async (req, res) => {
+    console.log(req.body);
     try {
+        res.set('Access-Control-Allow-Origin', '*');
         const { email, username, password } = req.body;
 
         // check the password length is valid (< 8)

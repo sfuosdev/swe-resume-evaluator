@@ -75,7 +75,7 @@ function UploadPage() {
     // eslint-disable-next-line no-unused-vars
     const [fileUploaded, setFileUploaded] = useState(false);
     const [errorMessage, setErrorMessage] = useState(null);
-    const [fileChange, callApi] = useResumeApi();
+    const [fileChange, callApi, apiResponse] = useResumeApi();
 
     const navigate = useNavigate();
 
@@ -103,6 +103,7 @@ function UploadPage() {
     const handleAcceptButtonClick = () => {
         if (allowedFileTypes.includes(fileType)) {
             callApi();
+            console.log(apiResponse);
             navigate('/loading');
         } else {
             setErrorMessage(
