@@ -5,10 +5,6 @@ const multer = require('multer');
 // req.file = { fieldname, originalname, ..., destination, filename, ...}
 // multipart/form-data
 const storage = multer.diskStorage({
-    destination: (req, file, callback) => {
-        callback(null, __dirname + '/upload/');
-    },
-
     filename: (req, file, callback) => {
         // change filename to original name
         callback(null, file.originalname);
@@ -49,7 +45,7 @@ const upload = multer({ storage: storage });
  *                  status:
  *                    type: integer
  *                    default: 200
- *                  category_matches:
+ *                  job_matches:
  *                    type: object
  *        400:
  *          description: Unsuccessful upload/request
@@ -67,23 +63,15 @@ const upload = multer({ storage: storage });
  */
 router.post('/', upload.single('file'), (req, res) => {
     try {
-        console.log(req.body);
+        res.set('Access-Control-Allow-Origin', '*');
         console.log(req.file); // req.file = { fieldname, originalname, ..., destination, filename, ...}
-
         return res.status(200).json({
             message: 'OK',
             status: 200,
-            category_matches: {
-                1: {
-                    category_id: 1234,
-                    category_name: 'software engineer',
-                    weight_sum: 87,
-                },
-                2: {
-                    category_id: 2222,
-                    category_name: 'business analyst',
-                    weight_sum: 35,
-                },
+            job_matches: {
+                "is_IT": "False",
+                "job_name": "Accountant",
+                "similarity": 5,
             },
         });
     } catch (error) {
