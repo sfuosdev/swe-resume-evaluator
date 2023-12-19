@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import logo from '../resources/logo.png';
+import logo from '../resources/logo2.png';
 
 const Image = styled.img`
     width: ${(props) => props.width}px;
