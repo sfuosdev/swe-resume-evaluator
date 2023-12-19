@@ -20,11 +20,13 @@
 </p>
 
 <p align="center">
-<b><a href="https://sfuswso.github.io/Macm316/">Live demo</a></b>
+<b><a href="https://osdev.ca/project/resume-evaluator/">Live demo</a></b>
 </p>
 
 <br><br>
-Description
+The SWE Resume Evaluator is a Software-as-a-Service (SaaS) web application that automatically classifies and assesses users' resumes to determine their suitability for software engineering roles, such as SWE, ML, and QA engineers.
+
+Naive Bayes classifier is used for natural language processing.
 
 ### Credits
 **`Project Lead` Jusung Park [@Pentaminum](https://github.com/Pentaminum)**  
