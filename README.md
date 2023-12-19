@@ -11,8 +11,15 @@
     <div>
 </h4>
 
-description
+<p align="center">
+  <a href="#credits">Credits</a> •
+  <a href="#storybook">Storybook</a> •
+  <a href="#testing">Testing</a> •
+  <a href="#development-setup">Development Setup</a> •
+  <a href="#production-setup">Production Setup</a>
+</p>
 
+<br><br>
 The demo website is live at  
 https://sfuswso.github.io/Macm316/
 
