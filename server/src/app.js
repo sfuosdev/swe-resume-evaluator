@@ -1,9 +1,9 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const authRouter = require('./routers/auth');
 const resumeRouter = require('./routers/resume/resume');
 const { swaggerUi, specs } = require('./swagger');
-const cors = require('cors');
 
 const app = express();
 
@@ -19,9 +19,5 @@ app.use(
 
 app.use('/auth', authRouter);
 app.use('/resume', resumeRouter);
-
-app.get('/', (req, res) => {
-    res.status(200).send('Hello World!');
-});
 
 module.exports = app;

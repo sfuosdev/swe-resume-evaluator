@@ -73,9 +73,9 @@ const ErrorMessage = styled.p`
 function UploadPage() {
     const [fileType, setFileType] = useState(null);
     // eslint-disable-next-line no-unused-vars
-    const [fileUploaded, setFileUploaded] = useState(false);
+    const [fileToUpload, setFileToUpload] = useState(null);
     const [errorMessage, setErrorMessage] = useState(null);
-    const [fileChange, callApi, apiResponse] = useResumeApi();
+    const { evaluateResume } = useResumeApi();
 
     const navigate = useNavigate();
 
@@ -87,23 +87,20 @@ function UploadPage() {
 
     // eslint-disable-next-line no-unused-vars
     const handleFileChange = (file) => {
-        setFileType(file.type);
-        setFileUploaded(true);
-        fileChange(file);
-
         if (!allowedFileTypes.includes(file.type)) {
             setErrorMessage(
                 'Invalid file type. Please upload a PDF or Word document.',
             );
         } else {
+            setFileType(file.type);
+            setFileToUpload(file);
             setErrorMessage(null);
         }
     };
 
     const handleAcceptButtonClick = () => {
-        if (allowedFileTypes.includes(fileType)) {
-            callApi();
-            console.log(apiResponse);
+        if (fileToUpload && allowedFileTypes.includes(fileType)) {
+            evaluateResume(fileToUpload);
             navigate('/loading');
         } else {
             setErrorMessage(
@@ -133,7 +130,7 @@ function UploadPage() {
                     type="button"
                     onClick={handleAcceptButtonClick}
                     disabled={
-                        !fileUploaded || !allowedFileTypes.includes(fileType)
+                        !fileToUpload || !allowedFileTypes.includes(fileType)
                     }
                 >
                     Evaluate

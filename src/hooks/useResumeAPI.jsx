@@ -1,40 +1,41 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useState } from 'react';
+import { useApiResponseContext } from '../context/apiResponseContext';
 
 export const useResumeApi = () => {
-    const [apiResponse, setResponse] = useState('');
-    const [file, setFile] = useState(null);
+    const [state, dispatch] = useApiResponseContext();
+    const [apiResponse, setApiResponse] = useState(state.routes.resume);
 
-    const fileChange = (upload) => {
-        if (!upload) {
-            console.log('upload is undefined');
+    const evaluateResume = (resumeFile) => {
+        if (!resumeFile) {
+            throw new Error('file is undefined');
         }
-        setFile(upload);
+        dispatch({
+            action: 'UPDATE_RESUME_RESPONSE',
+            value: null,
+        });
+        setApiResponse(null);
+
+        const data = new FormData();
+        data.append('file', resumeFile);
+        try {
+            fetch(`http://localhost:3000/resume`, {
+                method: 'POST',
+                body: data,
+                mode: 'cors',
+            })
+                .then((res) => res.json())
+                .then((res) => {
+                    setApiResponse(res);
+                    dispatch({
+                        action: 'UPDATE_RESUME_RESPONSE',
+                        value: res,
+                    });
+                    console.log(res);
+                });
+        } catch (error) {
+            throw new Error(`useResumeApi Error: ${JSON.stringify(error)}`);
+        }
     };
 
-    const callApi = useCallback(async () => {
-        if (file) {
-            const data = new FormData();
-            data.append('file', file);
-            try {
-                await fetch('http://localhost:4000/resume', {
-                    method: 'POST',
-                    body: data,
-                    mode: 'cors',
-                })
-                    .then((response) => response.json())
-                    .then((res) => {
-                        setResponse(res);
-                        console.log(apiResponse);
-                    });
-            } catch (error) {
-                console.log(error);
-            }
-        }
-    }, [file, apiResponse]);
-
-    useEffect(() => {
-        callApi();
-    }, [callApi]);
-
-    return [fileChange, callApi, apiResponse];
+    return { evaluateResume, apiResponse };
 };

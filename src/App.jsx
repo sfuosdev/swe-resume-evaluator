@@ -10,7 +10,7 @@ import NotFoundPage from './containers/NotFoundPage';
 import UploadPage from './containers/UploadPage';
 import Header from './components/Header';
 import Footer from './components/Footer';
-import { ResumeContextProvider } from './context/resumeContext';
+import { ApiResponseContextProvider } from './context/apiResponseContext';
 
 const AppWrapper = styled.div`
     display: flex;
@@ -24,7 +24,7 @@ function App() {
         <div className="App">
             <AppWrapper>
                 <Header />
-                <ResumeContextProvider>
+                <ApiResponseContextProvider>
                     <BrowserRouter>
                         <Routes>
                             <Route path="/" element={<MainPage />} />
@@ -42,7 +42,7 @@ function App() {
                             <Route path="*" element={<NotFoundPage />} />
                         </Routes>
                     </BrowserRouter>
-                </ResumeContextProvider>
+                </ApiResponseContextProvider>
                 <Footer />
             </AppWrapper>
         </div>

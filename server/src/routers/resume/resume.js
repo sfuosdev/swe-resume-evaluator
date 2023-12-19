@@ -1,6 +1,7 @@
 const express = require('express');
-const router = express.Router();
 const multer = require('multer');
+
+const router = express.Router();
 
 // req.file = { fieldname, originalname, ..., destination, filename, ...}
 // multipart/form-data
@@ -11,7 +12,7 @@ const storage = multer.diskStorage({
     },
 });
 
-const upload = multer({ storage: storage });
+const upload = multer({ storage });
 
 /**
  * @swagger
@@ -69,9 +70,9 @@ router.post('/', upload.single('file'), (req, res) => {
             message: 'OK',
             status: 200,
             job_matches: {
-                "is_IT": "False",
-                "job_name": "Accountant",
-                "similarity": 5,
+                is_IT: 'False',
+                job_name: 'Accountant',
+                similarity: 5,
             },
         });
     } catch (error) {
