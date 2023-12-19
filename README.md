@@ -20,7 +20,7 @@
 </p>
 
 <p align="center">
-<b>Service is provided at https://sfuswso.github.io/Macm316/ </b>
+<b><a href="https://sfuswso.github.io/Macm316/">Live demo</a></b>
 </p>
 
 <br><br>
