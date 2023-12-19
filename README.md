@@ -53,27 +53,3 @@ Run server-side API testing code.
 cd server
 npm run test
 ```
-
-### Commands
-In the development environment, you need to turn on both the React dev server and the Express.js server. The React dev server will listen on port 4000, while Express.js will listen on port 3000.
-
-**Run React dev server**
-```
-npm start
-```
-
-**Run Express.js server**
-```
-cd server
-npm start
-```
-
-Navigate to `localhost:4000/` in your browser.  
-
-
-For every merge event into the main branch, the workflow will create an Express.js bundle with an optimized build of the React app.
-```
-cd server
-npm start
-```
-Navigate to `localhost:3000/` in your browser.  
