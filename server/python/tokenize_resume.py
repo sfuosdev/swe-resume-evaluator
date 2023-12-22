@@ -30,16 +30,7 @@ def tokenize_resume(filepath: str):
 
     tokenized_resume.to_csv("./../resources/tokenized_resumes.csv", index=False)
 
-    # # Create the DataFrame
-    # tokenized_resume = pd.DataFrame(data)
-
-    # # export as a csv
-    # tokenized_resume.to_csv("../resources/tokenized_resumes.csv", index=False)
-
-    # # Use this csv contained tokenized list of sample resume for testing
-    # print("DataFrame exported to 'python/resources/tokenized_resume.csv'")
-
-    return
+    return 
 
 if __name__ == '__main__':
     tokenize_resume("./../resources/resume_data/")
