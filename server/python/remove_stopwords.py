@@ -11,7 +11,7 @@ from nltk.corpus import stopwords
 import ast
 import string
 
-def get_stopword_removed_list(tokens):
+def get_stopword_removed_list(tokens, job_cat):
     stop_words = set(stopwords.words('english'))
 
     # Remove non-ASCII strings and split combined words and symbols
@@ -29,8 +29,26 @@ def get_stopword_removed_list(tokens):
         if token.lower() not in stop_words and token.isnumeric() == False
     ]
 
+    # Remove common words for all categories
+    cleaned_tokens = [token for token in cleaned_tokens if token.lower() not in  ["resume", "worded", "first", "last", "template"]]
+
     # Replace "nt" with "not"
     cleaned_tokens = ['not' if token.lower() == 'nt' else token for token in cleaned_tokens]
+
+    if job_cat != "UD":
+        # Remove tokens that are the same as job_cat
+        if job_cat in ["ACCOUNTANT", "DESIGNER", "HR"]:
+            cleaned_tokens = [token for token in cleaned_tokens if token.lower() != job_cat.lower()]
+        # Additional cases based on job_cat
+        if job_cat == "ML":
+            # Remove specific words for "ML" category
+            cleaned_tokens = [token for token in cleaned_tokens if token.lower() not in ["ml", "machine", "learning"]]
+        elif job_cat == "QA":
+            # Remove specific words for "QA" category
+            cleaned_tokens = [token for token in cleaned_tokens if token.lower() not in ["qa", "quality", "assurance"]]
+        elif job_cat == "SWE":
+            # Remove specific words for "SWE" category
+            cleaned_tokens = [token for token in cleaned_tokens if token.lower() != "software"]
 
     return cleaned_tokens
 
@@ -52,8 +70,8 @@ def remove_stopwords(csv_filepath: str):
     # Load the CSV file into a DataFrame
     df = pd.read_csv(csv_filepath)
 
-    # Apply the get_stopword_removed_list function to the "Tokens" column
-    df['Tokens'] = df['Tokens'].apply(ast.literal_eval).apply(get_stopword_removed_list)
+    # Apply the get_stopword_removed_list function to the "Tokens" column and "Job_cat" column
+    df['Tokens'] = df.apply(lambda row: get_stopword_removed_list(ast.literal_eval(row['Tokens']), row['Job_cat']), axis=1)
 
     # bind all IT jobs into one
     df['IT'] = df['Job_cat'].apply(isIT)

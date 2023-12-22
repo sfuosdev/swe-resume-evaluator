@@ -1,109 +1,116 @@
 import pandas as pd
-from sklearn.model_selection import train_test_split
+import numpy as np
+from sklearn.model_selection import train_test_split, StratifiedShuffleSplit
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.metrics import accuracy_score
+from sklearn.utils.class_weight import compute_class_weight
+from sklearn.calibration import CalibratedClassifierCV
 import joblib
 from onlyIT import onlyIT
+from pdf2Token import pdf2Token
+from remove_stopwords import get_stopword_removed_list
+
+def balanced_split(X, y, test_size=0.4, random_state=42):
+    sss = StratifiedShuffleSplit(n_splits=1, test_size=test_size, random_state=random_state)
+
+    for train_index, test_index in sss.split(X, y):
+        X_train, X_temp = X.iloc[train_index], X.iloc[test_index]
+        y_train, y_temp = y.iloc[train_index], y.iloc[test_index]
+
+        # Perform a second stratified split for validation and testing sets
+        sss_inner = StratifiedShuffleSplit(n_splits=1, test_size=0.5, random_state=random_state)
+        for val_index, test_index in sss_inner.split(X_temp, y_temp):
+            X_val, X_test = X_temp.iloc[val_index], X_temp.iloc[test_index]
+            y_val, y_test = y_temp.iloc[val_index], y_temp.iloc[test_index]
+
+    return X_train, X_val, X_test, y_train, y_val, y_test
 
 def train_classifier2():
     # 1. Data loading (only IT resumes)
-    data = onlyIT('./../resources/stopword_removed_tokens.csv') #helper function I made
-    unique_jobs = data['Job_cat'].unique()
+    data = onlyIT('./../resources/stopword_removed_tokens.csv')  # Helper function
+    X = data['Tokens'].astype(str)
+    y = data['Job_cat']
 
-    # 2. Perform shuffling and splitting three times
-    best_val_accuracy = 0.0
-    best_data_split = {
-        'vectorizer': None,
-        'classifier': None,
-        'X_train': None,
-        'X_val': None,
-        'X_test': None,
-        'y_train': None,
-        'y_val': None,
-        'y_test': None
-    }
+    # Split the data into training, validation, and testing sets with stratified sampling
+    X_train, X_val, X_test, y_train, y_val, y_test = balanced_split(X, y)
+    # 3. Compute class weights to handle imbalance
+    class_weights = compute_class_weight('balanced', classes=np.unique(y_train), y=y_train)
+    class_weight_list = class_weights.tolist()  # Convert the array to a list
 
-    i = 0 
-    while(i<5):
-        # Shuffle the data
-        data_shuffled = data.sample(frac=1)
-        X = data_shuffled['Tokens'].astype(str)
-        y = data_shuffled['Job_cat']
+    # 4. Word vectorization and model training
+    vectorizer = CountVectorizer(min_df=2)
+    X_train_vectorized = vectorizer.fit_transform(X_train)
+    X_val_vectorized = vectorizer.transform(X_val)
 
-        # Split the shuffled data into training, validation, and testing sets
-        X_train, X_temp, y_train, y_temp = train_test_split(X, y, test_size=0.4, random_state=42)
-        X_val, X_test, y_val, y_test = train_test_split(X_temp, y_temp, test_size=0.5, random_state=42)
+    # Use a calibrated classifier to get probability estimates
+    classifier = MultinomialNB(class_prior=class_weight_list)
+    classifier.fit(X_train_vectorized, y_train)
 
-        # 3. Word vectorization and model training
-        vectorizer = CountVectorizer(min_df=2)
-        X_train_vectorized = vectorizer.fit_transform(X_train)
-        X_val_vectorized = vectorizer.transform(X_val)
-        
-        classifier = MultinomialNB() #NaiveBayes classifier
-        classifier.fit(X_train_vectorized, y_train)
+    # 5. Model evaluation with validation set
+    y_pred = classifier.predict(X_val_vectorized)
+    accuracy = accuracy_score(y_val, y_pred)
+    print(f'Validation Accuracy: {accuracy * 100:.2f}%')
 
-        # 4. Model evaluation with validation set
-        y_pred = classifier.predict(X_val_vectorized)
-        accuracy = accuracy_score(y_val, y_pred)
-        #print(f'Validation Accuracy: {accuracy * 100:.2f}%')
+    # 6. Save the model and vectorizer to files
+    joblib.dump(vectorizer, 'ml_vectorizer_2.joblib')
+    joblib.dump(classifier, 'ml_model_2.joblib')
+    print('Vectorizer and classifier saved')
 
-        flag = True
-        # 5. Check if all split sets have least three datas for each job category
-        for job_category in unique_jobs:
-            train_count = len(y_train[y_train == job_category])
-            val_count = len(y_val[y_val == job_category])
-            test_count = len(y_test[y_test == job_category])
-            if train_count < 3 or val_count < 3 or test_count < 3:
-                flag = False
-        if flag == False:
-            continue
-        else: i += 1
+def get_top_words_for_category(vectorizer, classifier, category, n=10):
+    # Get the feature names from the vectorizer
+    feature_names = np.array(vectorizer.get_feature_names_out())
 
-        # 6. Check if the current split has the highest validation accuracy
-        if accuracy > best_val_accuracy:
-            best_val_accuracy = accuracy
-            best_data_split = {
-                'vectorizer': vectorizer,
-                'classifier': classifier,
-                'X_train': X_train,
-                'X_val': X_val,
-                'X_test': X_test,
-                'y_train': y_train,
-                'y_val': y_val,
-                'y_test': y_test
-            }  
+    # Get the log probabilities for the specified category
+    log_probabilities = classifier.feature_log_prob_[classifier.classes_ == category]
 
-    # 7. Save the best model and vectorizer to files
-    joblib.dump(best_data_split['vectorizer'], 'ml_vectorizer_2.joblib')
-    joblib.dump(best_data_split['classifier'], 'ml_model_2.joblib')
+    # Get the indices of the top N log probabilities
+    top_indices = np.argsort(log_probabilities[0])[-n:]
 
-    # 8. Model evaluation with testing set
-    X_test_vectorized = vectorizer.transform(X_test)
-    y_test_pred = classifier.predict(X_test_vectorized)
-    accuracy_test = accuracy_score(y_test, y_test_pred)
-    print(f'Test Accuracy: {accuracy_test * 100:.2f}%')
+    # Get the top N words and their log probabilities
+    top_words = feature_names[top_indices]
+    top_log_probabilities = log_probabilities[0, top_indices]
 
-def classifier2(new_data: list):
+    return list(zip(top_words, top_log_probabilities))
+
+def classifier2(fpath: str):
+
+    tokens = pdf2Token(fpath)
+    clean_tokens = get_stopword_removed_list(tokens, "UD")
     # Load the vectorizer and trained model
     vectorizer = joblib.load('ml_vectorizer_2.joblib')
     classifier = joblib.load('ml_model_2.joblib')
     
     # Preprocess the new data using the loaded vectorizer
-    new_data_vectorized = vectorizer.transform([" ".join(new_data)])
+    new_data_vectorized = vectorizer.transform([" ".join(clean_tokens)])
 
     # Make predictions using the loaded model
     predictions = classifier.predict(new_data_vectorized)
     job_probabilities = classifier.predict_proba(new_data_vectorized)
-    job_score = max(job_probabilities[0])
     print(job_probabilities)
+    # Normalize the probabilities
+    normalized_probabilities = job_probabilities / np.sum(job_probabilities)
 
-    return(True, str(predictions[0]), job_score*100)
+    # Calculate the confidence score as the maximum normalized probability
+    confidence_score = np.max(normalized_probabilities) * 100
+
+    # # Specify the categories for which you want to get top words
+    # categories = classifier.classes_
+
+    # # Get top words for each category
+    # for category in categories:
+    #     top_words = get_top_words_for_category(vectorizer, classifier, category, n=10)
+    #     print(f"\nTop words for category '{category}':")
+    #     for word, coefficient in top_words:
+    #         print(f"{word}: {coefficient}")
+
+    return True, str(predictions[0]), int(confidence_score)
 
 if __name__ == '__main__':
-    #train_classifier2()
-    a,b,c = classifier2(['resume', 'burnaby', 'bc', 'v5a', '1s6', 'jiin', 'kim', 'jka273sfuca', 'linkedin', 'github', 'education', 'certification', 'simon', 'fraser', 'university', 'honours', 'bachelor', 'science', 'hons', 'bsc', 'computer', 'science', 'aws', 'certified', 'cloud', 'developer', 'associate', 'dva', 'c02', 'sep', 'present', 'burnaby', 'bc', 'apr', 'skills', 'programming', 'languages', 'java', 'python', 'javascript', 'c', 'c', 'php', 'frameworks', 'libs', 'react', 'spring', 'boot', 'expressjs', 'laravel', 'flask', 'jest', 'junit', 'cucumber', 'softwares', 'tools', 'aws', 'jira', 'git', 'github', 'actions', 'docker', 'mysql', 'mongodb', 'swagger', 'technical', 'work', 'experience', 'global', 'relay', 'junior', 'software', 'development', 'engineer', 'test', 'jan', 'sep', 'vancouver', 'bc', 'developed', 'test', 'automation', 'framework', 'taf', 'tightly', 'coupled', 'spring', 'boot', 'microservice', 'performs', 'multi', 'layered', 'testing', 'ensure', 'zero', 'crashes', 'proceeding', 'performance', 'testing', 'k8s', 'implemented', 'regression', 'integration', 'system', 'testing', 'using', 'cucumber', 'docker', 'compose', 'verify', 'success', 'rate', 'transpiling', '1m', 'reddit', 'feeds', 'unified', 'eml', 'format', 'implemented', 'python', 'toolkit', 'mocking', 'reddit', 'api', 'randomized', 'data', 'users', 'posts', 'comments', 'achieved', 'transition', 'manual', 'testing', 'automated', 'bdd', 'tests', 'decoupling', 'via', 'using', 'mock', 'microservices', 'renu', 'bio', 'health', 'ltd', 'web', 'developer', 'nov', 'dec', 'vancouver', 'bc', 'developed', 'laravel', 'php', 'cron', 'scheduler', 'connects', 'saas', 'apis', 'automate', 'ecommerce', 'sales', 'workflows', 'implemented', 'fault', 'tolerant', 'backend', 'service', 'retry', 'mechanism', 'using', 'laravel', 'queue', 'tracks', 'errors', 'saas', 'integration', 'pipeline', 'enables', 'debugging', 'reprocessing', 'automated', 'data', 'organizing', 'process', 'using', 'google', 'api', 'javascript', 'eliminate', 'manual', 'work', 'excel', 'provisioned', 'vpc', 'load', 'balancers', 'computing', 'instances', 'databases', 'using', 'elasticbeanstalk', 'aws', 'technical', 'project', 'swe', 'resume', 'evaluator', 'github', 'sep', 'present', 'led', 'team', 'sfu', 'students', 'managing', 'workloads', 'task', 'delegation', 'configuring', 'ci', 'cd', 'hosting', 'aws', 'developed', 'ai', 'based', 'software', 'service', 'saas', 'application', 'react', 'python', 'expressjs', 'firebase', 'using', 'naive', 'bayes', 'classifiers', 'python', 'assess', 'user', 'resumes', 'fit', 'software', 'engineer', 'roles', 'macm316', 'demo', 'github', 'may', 'aug', 'led', 'team', 'sfu', 'students', 'embraced', 'agile', 'practices', 'retrospective', 'meetings', 'collect', 'insights', 'developed', 'graphical', 'calculator', 'web', 'app', 'react', 'via', 'test', 'driven', 'development', 'tdd', 'using', 'jest', 'rtl', 'leadership', 'volunteering', 'sfu', 'os', 'open', 'source', 'development', 'club', 'co', 'founder', 'vice', 'president', 'jan', 'present', 'founded', 'student', 'led', 'software', 'development', 'club', 'sfu', 'club', 'members', 'led', 'software', 'development', 'projects', 'student', 'developers', 'managing', 'task', 'tickets', 'workloads', 'sfu', 'peer', 'tutoring', 'program', 'cs', 'peer', 'tutor', 'may', 'present', 'volunteered', 'tutoring', 'students', 'help', 'grasp', 'challenging', 'concepts', 'cpu', 'pipelining', 'served', 'senior', 'tutor', 'provide', 'guidance', 'junior', 'tutors', 'approaching', 'tutees', 'awards', 'open', 'source', 'software', 'engagement', 'award', 'simon', 'fraser', 'university', 'senate', 'undergraduate', 'committee', 'sep', 'granted', 'undergraduate', 'student', 'demonstrates', 'excellence', 'open', 'source', 'software', 'projects', 'httpswwwlinkedincominjiinkim34581a183', 'httpsgithubcomjiinkim109', 'httpsgithubcomjiinkim109sweresumeevaluator', 'httpssfuswsogithubiomacm316', 'httpsgithubcomsfuswsomacm316', 'httpsgosfsscaclubs867info', 'httpswwwsfucacomputingcurrentstudentsundergraduatestudentsstudentresourcescspeertutoring11234meetyourpeertutorshtml'])
-    #a,b,c = classifier2(["Designed", "test", "plans", "cover", "functional", "requirements", "30+", "newly" ,"added", "features","web" ,"platform"])
-    #a,b,c = classifier2(["responsible", "comprehensive", "test", "plans", "include", "functional", "integrated", "release", "testing", "objectives", "project", "release", "store", "test", "plans", "shared", "drive"])
-    print(a,b,c)
+    train_classifier2()
+    print(classifier2("./../resources/SWE_sample.pdf"))
+    # print(classifier2("./../resources/SWE_sample_2.pdf"))
+    # print(classifier2("./../resources/SWE_sample_3.pdf"))
+    # print(classifier2("./../resources/QA_sample.pdf"))
+    # print(classifier2("./../resources/ML_sample.pdf"))
 
