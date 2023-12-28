@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { getAuth, signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import { initializeApp } from 'firebase/app';
 
 const firebaseConfig = {
@@ -129,6 +129,17 @@ function LoginSignupView({ isLogin, toggleView }) {
         }
     };
 
+    const handleLogout = async () => {
+        signOut(fbAuth)
+            .then(() => {
+                console.log('Signed out');
+                localStorage.removeItem('userToken');
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
+
     return (
         <>
             <Header>{isLogin ? 'LOG IN' : 'SIGN UP'}</Header>
@@ -169,6 +180,9 @@ function LoginSignupView({ isLogin, toggleView }) {
                         ? 'Do not have an account? Sign up'
                         : 'Already have an account? Log in'}
                 </SwitchButton>
+                <ActionButton type="button" onClick={handleLogout}>
+                    LogOut
+                </ActionButton>
             </Footer>
         </>
     );
