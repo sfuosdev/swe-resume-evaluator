@@ -6,6 +6,7 @@ from sklearn.metrics import accuracy_score, classification_report
 import joblib
 from pdf2Token import pdf2Token
 from remove_stopwords import get_stopword_removed_list
+import json
 
 
 def train_classifier1():
@@ -47,14 +48,14 @@ def train_classifier1():
     # print(classification_report(y_test, y_test_pred))
 
 
-def classifier1(fpath: str):
+def classifier1(fpath: str, mpath: str):
     
     tokens = pdf2Token(fpath)
     clean_tokens = get_stopword_removed_list(tokens, "UD")
 
     # Load the vectorizer and trained model
-    vectorizer = joblib.load('ml_vectorizer_1.joblib')
-    classifier = joblib.load('ml_model_1.joblib')
+    vectorizer = joblib.load(mpath + "ml_vectorizer_1.joblib")
+    classifier = joblib.load(mpath + 'ml_model_1.joblib')
     
     # Preprocess the new data using the loaded vectorizer
     new_data_vectorized = vectorizer.transform([" ".join(clean_tokens)])
@@ -65,11 +66,19 @@ def classifier1(fpath: str):
     it_score = job_probabilities[0][3]
 
     # Return the predictions along with confidence score
-    return str(predictions[0]), int(it_score * 100), True if str(predictions[0]) == "IT" else False
+    isIT = True if str(predictions[0]) == "IT" else False
+
+    result = {
+        "is_IT": isIT,
+        "job_name": str(predictions[0]),
+        "similarity": int(it_score * 100)
+    }
+    return json.dumps(result)
+    #return str(predictions[0]), int(it_score * 100), True if str(predictions[0]) == "IT" else False
 
 
-if __name__ == '__main__':
-    train_classifier1()
-    print(classifier1("./../resources/SWE_sample.pdf"))
-    print(classifier1("./../resources/HR_sample.pdf"))
-    print(classifier1("./../resources/QA_sample.pdf"))
+# if __name__ == '__main__':
+#     #train_classifier1()
+#     print(classifier1("./../resources/SWE_sample.pdf"))
+#     print(classifier1("./../resources/HR_sample.pdf"))
+#     print(classifier1("./../resources/QA_sample.pdf"))
