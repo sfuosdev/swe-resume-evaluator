@@ -11,11 +11,6 @@ function Loading() {
     const encodedFile = { ...location.state }; // received file object
     const [state] = useApiResponseContext();
 
-    if (!isLoading && state.routes.resume) {
-        // Navigate to the result page when "loaded" becomes true
-        navigate('/result/0x00', { replace: true }); // Handle :rID value here
-    }
-
     useEffect(() => {
         const loadingTimeout = setTimeout(() => {
             setLoading(false);
@@ -23,6 +18,15 @@ function Loading() {
 
         return () => clearTimeout(loadingTimeout);
     }, []);
+
+    useEffect(() => {
+        if (!isLoading) {
+            if (state.routes.resume) {
+                // Navigate to the worked result page when "loaded" is available
+                navigate('/result/worked', { replace: true }); // Handle :rID value here
+            }
+        }
+    }, [isLoading, state.routes.resume, navigate]);
 
     return (
         <div>

@@ -10,6 +10,9 @@ import joblib
 from onlyIT import onlyIT
 from pdf2Token import pdf2Token
 from remove_stopwords import get_stopword_removed_list
+from classifier_1 import classifier1
+import json
+import sys
 
 def balanced_split(X, y, test_size=0.4, random_state=42):
     sss = StratifiedShuffleSplit(n_splits=1, test_size=test_size, random_state=random_state)
@@ -53,8 +56,8 @@ def train_classifier2():
     print(f'Validation Accuracy: {accuracy * 100:.2f}%')
 
     # 6. Save the model and vectorizer to files
-    joblib.dump(vectorizer, 'ml_vectorizer_2.joblib')
-    joblib.dump(classifier, 'ml_model_2.joblib')
+    joblib.dump(vectorizer, './ml_vectorizer_2.joblib')
+    joblib.dump(classifier, './ml_model_2.joblib')
     print('Vectorizer and classifier saved')
 
 def get_top_words_for_category(vectorizer, classifier, category, n=10):
@@ -73,44 +76,49 @@ def get_top_words_for_category(vectorizer, classifier, category, n=10):
 
     return list(zip(top_words, top_log_probabilities))
 
-def classifier2(fpath: str):
+def classifier2(fpath: str, mpath: str):
+    result1 = json.loads(classifier1(fpath, mpath))
+    if result1['is_IT'] == False:
+        return result1
+    else:
+        tokens = pdf2Token(fpath)
+        clean_tokens = get_stopword_removed_list(tokens, "UD")
+        # Load the vectorizer and trained model
+        vectorizer = joblib.load(mpath + 'ml_vectorizer_2.joblib')
+        classifier = joblib.load(mpath + 'ml_model_2.joblib')
+        
+        # Preprocess the new data using the loaded vectorizer
+        new_data_vectorized = vectorizer.transform([" ".join(clean_tokens)])
 
-    tokens = pdf2Token(fpath)
-    clean_tokens = get_stopword_removed_list(tokens, "UD")
-    # Load the vectorizer and trained model
-    vectorizer = joblib.load('ml_vectorizer_2.joblib')
-    classifier = joblib.load('ml_model_2.joblib')
-    
-    # Preprocess the new data using the loaded vectorizer
-    new_data_vectorized = vectorizer.transform([" ".join(clean_tokens)])
+        # Make predictions using the loaded model
+        predictions = classifier.predict(new_data_vectorized)
+        job_probabilities = classifier.predict_proba(new_data_vectorized)
+        # Normalize the probabilities
+        normalized_probabilities = job_probabilities / np.sum(job_probabilities)
 
-    # Make predictions using the loaded model
-    predictions = classifier.predict(new_data_vectorized)
-    job_probabilities = classifier.predict_proba(new_data_vectorized)
-    print(job_probabilities)
-    # Normalize the probabilities
-    normalized_probabilities = job_probabilities / np.sum(job_probabilities)
+        # Calculate the confidence score as the maximum normalized probability
+        it_score = np.max(normalized_probabilities)
 
-    # Calculate the confidence score as the maximum normalized probability
-    confidence_score = np.max(normalized_probabilities) * 100
+        result = {
+            "is_IT": True,
+            "job_name": str(predictions[0]),
+            "similarity": int(it_score * 100)
+        }
+        return json.dumps(result)
 
-    # # Specify the categories for which you want to get top words
-    # categories = classifier.classes_
+        # # Specify the categories for which you want to get top words
+        # categories = classifier.classes_
 
-    # # Get top words for each category
-    # for category in categories:
-    #     top_words = get_top_words_for_category(vectorizer, classifier, category, n=10)
-    #     print(f"\nTop words for category '{category}':")
-    #     for word, coefficient in top_words:
-    #         print(f"{word}: {coefficient}")
+        # # Get top words for each category
+        # for category in categories:
+        #     top_words = get_top_words_for_category(vectorizer, classifier, category, n=10)
+        #     print(f"\nTop words for category '{category}':")
+        #     for word, coefficient in top_words:
+        #         print(f"{word}: {coefficient}")
 
-    return True, str(predictions[0]), int(confidence_score)
+        # return True, str(predictions[0]), int(confidence_score)
 
 if __name__ == '__main__':
-    train_classifier2()
-    print(classifier2("./../resources/SWE_sample.pdf"))
-    # print(classifier2("./../resources/SWE_sample_2.pdf"))
-    # print(classifier2("./../resources/SWE_sample_3.pdf"))
-    # print(classifier2("./../resources/QA_sample.pdf"))
-    # print(classifier2("./../resources/ML_sample.pdf"))
-
+    fpath = sys.argv[1]
+    mpath = sys.argv[2]
+    print(classifier2(fpath, mpath))
