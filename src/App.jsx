@@ -10,6 +10,7 @@ import NotFoundPage from './containers/NotFoundPage';
 import UploadPage from './containers/UploadPage';
 import Header from './components/Header';
 import Footer from './components/Footer';
+import GuidelinePage from './containers/GuidelinePage';
 
 const AppWrapper = styled.div`
     display: flex;
@@ -30,6 +31,7 @@ function App() {
                             path="/termAndCondition"
                             element={<TermAndConditionPage />}
                         />
+                        <Route path="/guideline" element={<GuidelinePage />} />
                         <Route path="/upload" element={<UploadPage />} />
                         <Route path="/loading" element={<LoadingPage />} />
                         <Route

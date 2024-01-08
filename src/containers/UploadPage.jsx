@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Dropzone from '../components/Dropzone';
 import DragAndDropIndicator from '../components/DragAndDropIndicator';
+import StepIndicator from '../components/StepIndicator';
 
 const Wrapper = styled.div`
     display: flex;
@@ -107,7 +108,7 @@ function UploadPage() {
         }
     };
     const handleDeclineButtonClick = () => {
-        navigate('/termAndCondition');
+        navigate('/guideline');
     };
 
     return (
@@ -134,6 +135,7 @@ function UploadPage() {
                     Evaluate
                 </AcceptButton>
             </ButtonContainer>
+            <StepIndicator pageNum={3} />
         </Wrapper>
     );
 }

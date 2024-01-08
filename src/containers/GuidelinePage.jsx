@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import TermAndCondition from '../components/TermAndCondition';
+import Guidelines from '../components/Guidelines';
 import StepIndicator from '../components/StepIndicator';
 
 const Wrapper = styled.div`
@@ -59,19 +59,19 @@ const AcceptButton = styled.button`
     }
 `;
 
-function TermAndConditionPage() {
+function GuidelinePage() {
     const navigate = useNavigate();
     const handleAcceptButtonClick = () => {
-        navigate('/guideline');
+        navigate('/upload');
     };
     const handleDeclineButtonClick = () => {
-        navigate('/');
+        navigate('/termAndCondition');
     };
 
     return (
         <Wrapper>
-            <Title>Terms And Conditions</Title>
-            <TermAndCondition width={600} height={300} />
+            <Title>Guideline</Title>
+            <Guidelines />
             <ButtonContainer>
                 <DeclineButton type="button" onClick={handleDeclineButtonClick}>
                     Decline
@@ -80,9 +80,9 @@ function TermAndConditionPage() {
                     Accept
                 </AcceptButton>
             </ButtonContainer>
-            <StepIndicator pageNum={1} />
+            <StepIndicator pageNum={2} />
         </Wrapper>
     );
 }
 
-export default TermAndConditionPage;
+export default GuidelinePage;
