@@ -52,7 +52,8 @@ function PdfViewer(props) {
 }
 
 PdfViewer.propTypes = {
-    file: PropTypes.string.isRequired,
+    // eslint-disable-next-line react/forbid-prop-types
+    file: PropTypes.any.isRequired,
     width: PropTypes.number.isRequired,
     height: PropTypes.number.isRequired,
 };

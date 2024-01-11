@@ -10,6 +10,7 @@ import NotFoundPage from './containers/NotFoundPage';
 import UploadPage from './containers/UploadPage';
 import Header from './components/Header';
 import Footer from './components/Footer';
+import { ApiResponseContextProvider } from './context/apiResponseContext';
 import GuidelinePage from './containers/GuidelinePage';
 
 const AppWrapper = styled.div`
@@ -24,24 +25,29 @@ function App() {
         <div className="App">
             <AppWrapper>
                 <Header />
-                <BrowserRouter>
-                    <Routes>
-                        <Route path="/" element={<MainPage />} />
-                        <Route
-                            path="/termAndCondition"
-                            element={<TermAndConditionPage />}
-                        />
-                        <Route path="/guideline" element={<GuidelinePage />} />
-                        <Route path="/upload" element={<UploadPage />} />
-                        <Route path="/loading" element={<LoadingPage />} />
-                        <Route
-                            path="/result/:rId"
-                            element={<ReportingPage />}
-                        />
-                        {/* Exception Handling Page */}
-                        <Route path="*" element={<NotFoundPage />} />
-                    </Routes>
-                </BrowserRouter>
+                <ApiResponseContextProvider>
+                    <BrowserRouter>
+                        <Routes>
+                            <Route path="/" element={<MainPage />} />
+                            <Route
+                                path="/termAndCondition"
+                                element={<TermAndConditionPage />}
+                            />
+                            <Route
+                                path="/guideline"
+                                element={<GuidelinePage />}
+                            />
+                            <Route path="/upload" element={<UploadPage />} />
+                            <Route path="/loading" element={<LoadingPage />} />
+                            <Route
+                                path="/result/:rId"
+                                element={<ReportingPage />}
+                            />
+                            {/* Exception Handling Page */}
+                            <Route path="*" element={<NotFoundPage />} />
+                        </Routes>
+                    </BrowserRouter>
+                </ApiResponseContextProvider>
                 <Footer />
             </AppWrapper>
         </div>

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Dropzone from '../components/Dropzone';
-import DragAndDropIndicator from '../components/DragAndDropIndicator';
+import { useResumeApi } from '../hooks/useResumeAPI';
 import StepIndicator from '../components/StepIndicator';
 
 const Wrapper = styled.div`
@@ -73,8 +73,9 @@ const ErrorMessage = styled.p`
 function UploadPage() {
     const [fileType, setFileType] = useState(null);
     // eslint-disable-next-line no-unused-vars
-    const [fileUploaded, setFileUploaded] = useState(false);
+    const [fileToUpload, setFileToUpload] = useState(null);
     const [errorMessage, setErrorMessage] = useState(null);
+    const { evaluateResume } = useResumeApi();
 
     const navigate = useNavigate();
 
@@ -86,21 +87,23 @@ function UploadPage() {
 
     // eslint-disable-next-line no-unused-vars
     const handleFileChange = (file) => {
-        setFileType(file.type);
-        setFileUploaded(true);
-
         if (!allowedFileTypes.includes(file.type)) {
             setErrorMessage(
                 'Invalid file type. Please upload a PDF or Word document.',
             );
         } else {
+            setFileType(file.type);
+            setFileToUpload(file);
             setErrorMessage(null);
         }
     };
 
     const handleAcceptButtonClick = () => {
-        if (allowedFileTypes.includes(fileType)) {
-            navigate('/loading');
+        if (fileToUpload && allowedFileTypes.includes(fileType)) {
+            evaluateResume(fileToUpload);
+            navigate('/loading', {
+                state: { fileURL: fileToUpload },
+            });
         } else {
             setErrorMessage(
                 'Invalid file type. Please upload a PDF or Word document.',
@@ -119,7 +122,6 @@ function UploadPage() {
                 width={600}
                 height={150}
             />
-            <DragAndDropIndicator onFileChange={handleFileChange} />
             {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
             <ButtonContainer>
                 <DeclineButton type="button" onClick={handleDeclineButtonClick}>
@@ -129,7 +131,7 @@ function UploadPage() {
                     type="button"
                     onClick={handleAcceptButtonClick}
                     disabled={
-                        !fileUploaded || !allowedFileTypes.includes(fileType)
+                        !fileToUpload || !allowedFileTypes.includes(fileType)
                     }
                 >
                     Evaluate

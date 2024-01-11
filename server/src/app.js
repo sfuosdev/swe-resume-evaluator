@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const authRouter = require('./routers/auth');
 const resumeRouter = require('./routers/resume/resume');
 const { swaggerUi, specs } = require('./swagger');
@@ -8,6 +9,7 @@ const app = express();
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(cors());
 
 app.use(
     '/api-docs',
@@ -17,9 +19,5 @@ app.use(
 
 app.use('/auth', authRouter);
 app.use('/resume', resumeRouter);
-
-app.get('/', (req, res) => {
-    res.status(200).send('Hello World!');
-});
 
 module.exports = app;

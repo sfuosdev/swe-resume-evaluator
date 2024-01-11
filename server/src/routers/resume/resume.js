@@ -1,21 +1,24 @@
 const express = require('express');
-const router = express.Router();
 const multer = require('multer');
+// eslint-disable-next-line import/no-extraneous-dependencies
+const { PythonShell } = require('python-shell');
+const path = require('path');
+
+const router = express.Router();
 
 // req.file = { fieldname, originalname, ..., destination, filename, ...}
 // multipart/form-data
 const storage = multer.diskStorage({
-    destination: (req, file, callback) => {
-        callback(null, __dirname + '/upload/');
+    destination: (req, file, done) => {
+        done(null, path.join(__dirname, '../../../resources/'));
     },
-
     filename: (req, file, callback) => {
         // change filename to original name
         callback(null, file.originalname);
     },
 });
 
-const upload = multer({ storage: storage });
+const upload = multer({ storage });
 
 /**
  * @swagger
@@ -49,7 +52,7 @@ const upload = multer({ storage: storage });
  *                  status:
  *                    type: integer
  *                    default: 200
- *                  category_matches:
+ *                  job_matches:
  *                    type: object
  *        400:
  *          description: Unsuccessful upload/request
@@ -65,26 +68,29 @@ const upload = multer({ storage: storage });
  *                    type: integer
  *                    default: 400
  */
-router.post('/', upload.single('file'), (req, res) => {
+router.post('/', upload.single('file'), async (req, res) => {
     try {
-        console.log(req.body);
-        console.log(req.file); // req.file = { fieldname, originalname, ..., destination, filename, ...}
-
+        // res.set('Access-Control-Allow-Origin', '*');
+        // console.log(req.file); // req.file = { fieldname, originalname, ..., destination, filename, ...}
+        const filePath = path.join(
+            __dirname,
+            '../../../resources',
+            req.file.filename,
+        );
+        const pyPath = path.join(__dirname, '../../../python/');
+        const options = {
+            scriptPath: path.join(__dirname, '../../../python'),
+            args: [filePath, pyPath],
+        };
+        // let pyshell = new PythonShell('classifier_2.py', options);
+        // pyshell.on('message', function (message) {
+        //     console.log(message)
+        // });
+        const result = await PythonShell.run('classifier_2.py', options);
         return res.status(200).json({
             message: 'OK',
             status: 200,
-            category_matches: {
-                1: {
-                    category_id: 1234,
-                    category_name: 'software engineer',
-                    weight_sum: 87,
-                },
-                2: {
-                    category_id: 2222,
-                    category_name: 'business analyst',
-                    weight_sum: 35,
-                },
-            },
+            job_matches: JSON.parse(result),
         });
     } catch (error) {
         return res.status(400).json({

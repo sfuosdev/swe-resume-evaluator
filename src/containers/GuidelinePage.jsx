@@ -24,7 +24,7 @@ const DeclineButton = styled.button`
     position: relative;
     z-index: 2;
     font-size: 16px;
-    margin-top: 20px; /* Adjust the margin to your preference */
+    margin-top: 20px;
     background-color: white;
     color: grey;
     padding: 10px 20px;
@@ -44,7 +44,7 @@ const AcceptButton = styled.button`
     position: relative;
     z-index: 2;
     font-size: 16px;
-    margin-top: 20px; /* Adjust the margin to your preference */
+    margin-top: 20px;
     background-color: #01dfa5;
     color: white;
     padding: 10px 20px;

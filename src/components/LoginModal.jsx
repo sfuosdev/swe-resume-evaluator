@@ -5,7 +5,6 @@ import LoginSignupView from './LoginSignupView';
 
 const DarkBG = styled.div`
     position: absolute;
-    background-color: rgba(0, 0, 0, 0.2);
     width: 100vw;
     height: 100vh;
     top: 50%;

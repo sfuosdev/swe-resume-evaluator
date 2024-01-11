@@ -1,5 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faGithub } from '@fortawesome/free-brands-svg-icons';
 
 const Wrapper = styled.div`
     display: flex;
@@ -28,9 +30,17 @@ function Footer() {
         <Wrapper>
             <WrapperLeft>
                 <div>Term of Service</div>
-                <div>About Us</div>
+                <div>
+                    <a href="https://github.com/sfuSwSo">
+                        <FontAwesomeIcon
+                            icon={faGithub}
+                            style={{ marginRight: '10px' }}
+                        />
+                        About Us
+                    </a>
+                </div>
             </WrapperLeft>
-            <div>2023 SFU OS Development club</div>
+            <div>SFU OS Devlopment Club</div>
         </Wrapper>
     );
 }
