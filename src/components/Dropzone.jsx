@@ -1,12 +1,13 @@
 import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
 const UploadButton = styled.button`
     width: ${(props) => props.width}px;
     height: ${(props) => props.height}px;
     position: relative;
-    z-index: 2;
     font-size: 16px;
     margin-top: 20px;
     background-color: white;
@@ -18,6 +19,7 @@ const UploadButton = styled.button`
     border-color: grey;
     transition: background-color 0.3s ease;
     text-align: center;
+    background-color: ${(props) => (props.isDragging ? '#e6e6e6' : 'white')};
 
     &:hover {
         background-color: #e6e6e6;
@@ -53,32 +55,68 @@ function Dropzone({ onFileChange, width, height }) {
         onFileChange(event.target.files[0]);
     };
 
+    const [isDragging, setIsDragging] = useState(false);
+
+    const handleDragEnter = () => {
+        setIsDragging(true);
+    };
+
+    const handleDragLeave = () => {
+        setIsDragging(false);
+    };
+
+    const handleDragOver = (event) => {
+        event.preventDefault();
+    };
+
+    const handleDrop = (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        const droppedFile = event.dataTransfer.files[0];
+        setUploadedFile(droppedFile);
+        onFileChange(droppedFile);
+        setIsDragging(false);
+    };
+
     return (
         <div>
             <div>
-                <UploadButton
-                    type="button"
-                    onClick={uploadFileHandler}
-                    width={width}
-                    height={height}
-                >
-                    {uploadedFile ? (
-                        <p>{uploadedFile.name}</p>
-                    ) : (
-                        <>
-                            <p>
-                                <strong>
-                                    Drag your resume here or click to select
-                                    file
-                                </strong>
-                            </p>
-                            <p style={{ color: 'grey', fontSize: '14px' }}>
-                                only accept .pdf .docx, each file should not
-                                exceed 2mb
-                            </p>
-                        </>
-                    )}
-                </UploadButton>
+                <DndProvider backend={HTML5Backend}>
+                    <UploadButton
+                        type="button"
+                        onClick={uploadFileHandler}
+                        width={width}
+                        height={height}
+                        isDragging={isDragging}
+                        onDragEnter={handleDragEnter}
+                        onDragLeave={handleDragLeave}
+                        onDragOver={handleDragOver}
+                        onDrop={handleDrop}
+                    >
+                        {uploadedFile ? (
+                            <p>{uploadedFile.name}</p>
+                        ) : (
+                            <>
+                                <p style={{ pointerEvents: 'none' }}>
+                                    <strong>
+                                        Drag your resume here or click to select
+                                        file
+                                    </strong>
+                                </p>
+                                <p
+                                    style={{
+                                        color: 'grey',
+                                        fontSize: '14px',
+                                        pointerEvents: 'none',
+                                    }}
+                                >
+                                    only accept .pdf .docx, each file should not
+                                    exceed 2mb
+                                </p>
+                            </>
+                        )}
+                    </UploadButton>
+                </DndProvider>
             </div>
             <input
                 type="file"

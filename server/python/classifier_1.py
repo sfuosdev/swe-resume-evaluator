@@ -67,10 +67,17 @@ def classifier1(fpath: str, mpath: str):
 
     # Return the predictions along with confidence score
     isIT = True if str(predictions[0]) == "IT" else False
+    job_name = str(predictions[0])
+    if job_name == "ACCOUNTANT":
+        job_name = "Accountant"
+    elif job_name == "DESIGNER":
+        job_name = "Designer"
+    elif job_name == "HR":
+        job_name = "Human Resources Manager"
 
     result = {
         "is_IT": isIT,
-        "job_name": str(predictions[0]),
+        "job_name": job_name,
         "similarity": int(it_score * 100)
     }
     return json.dumps(result)

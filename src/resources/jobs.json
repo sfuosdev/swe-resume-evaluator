@@ -1,0 +1,28 @@
+{
+    "jobs":[
+        {
+            "job_name": "Designer",
+            "job_description": "A designer is a person who plans the form or structure of something before it is made, by preparing drawings or plans. \nIn practice, anyone who creates tangible or intangible objects, products, processes, laws, games, graphics, services, or experiences can be referred to as a designer."    
+        },
+        {
+            "job_name": "Human Resources Manager",
+            "job_description": "Human resources managers plan, direct, and coordinate the administrative functions of an organization. \nThey oversee the recruiting, interviewing, and hiring of new staff; consult with top executives on strategic planning; and serve as a link between an organization’s management and its employees."
+        },
+        {
+            "job_name": "Accountant",
+            "job_description": "An accountant is a practitioner of accounting or accountancy. \nSuch professionals are granted certain responsibilities by statute, such as the ability to certify an organization's financial statements, and may be held liable for professional misconduct."
+        },
+        {
+            "job_name": "Software Engineer",
+            "job_description": "A software engineer is a person who applies the engineering design process to design, develop, test, maintain, and evaluate computer software. The term programmer is sometimes used as a synonym, but may emphasize software implementation over design and can also lack connotations of engineering education or skills."
+        },
+        {
+            "job_name": "Quality Assurance Engineer",
+            "job_description": "A QA engineer, or Quality Assurance engineer, is responsible for ensuring the quality and functionality of software products by designing and implementing testing processes. They collaborate with development teams, identify and report bugs, and work to enhance the overall reliability and performance of software systems, adhering to industry standards and best practices."
+        },
+        {
+            "job_name": "Machine Learning Engineer",
+            "job_description": "A machine learning engineer designs, develops, and implements machine learning algorithms and models to enable computers to perform tasks without explicit programming. They leverage statistical analysis and data-driven insights to create scalable solutions, optimizing algorithms for accuracy and efficiency in various applications, such as image recognition, natural language processing, and predictive analytics."
+        }
+        ]
+}

@@ -79,7 +79,7 @@ def get_top_words_for_category(vectorizer, classifier, category, n=10):
 def classifier2(fpath: str, mpath: str):
     result1 = json.loads(classifier1(fpath, mpath))
     if result1['is_IT'] == False:
-        return result1
+        return json.dumps(result1)
     else:
         tokens = pdf2Token(fpath)
         clean_tokens = get_stopword_removed_list(tokens, "UD")
@@ -98,10 +98,17 @@ def classifier2(fpath: str, mpath: str):
 
         # Calculate the confidence score as the maximum normalized probability
         it_score = np.max(normalized_probabilities)
+        job_name = str(predictions[0])
+        if job_name == "SWE":
+            job_name = "Software Engineer"
+        elif job_name == "ML":
+            job_name = "Machine Learning Engineer"
+        elif job_name == "QA":
+            job_name = "Quality Assurance Engineer"
 
         result = {
             "is_IT": True,
-            "job_name": str(predictions[0]),
+            "job_name": job_name,
             "similarity": int(it_score * 100)
         }
         return json.dumps(result)
