@@ -58,7 +58,7 @@
     "webpack": "^5.88.2"
   },
   "scripts": {
-    "preinstall": "./preinstall.sh",
+    "preinstall": "bash ./preinstall.sh",
     "build": "GENERATE_SOURCEMAP=false react-scripts build && rm -rf server/public && mv build server/public",
     "start": "cd server && npm run start",
     "develop": "GENERATE_SOURCEMAP=false PORT=4000 react-scripts start",
