@@ -28,3 +28,4 @@ server/.env
 server/serviceAccountKey.json
 
 server/src/routers/resume/upload
+server/public

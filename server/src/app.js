@@ -7,9 +7,14 @@ const { swaggerUi, specs } = require('./swagger');
 
 const app = express();
 
+app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
+
+app.get('/', (req, res) => {
+    res.sendFile('public/index.html', { root: __dirname });
+});
 
 app.use(
     '/api-docs',

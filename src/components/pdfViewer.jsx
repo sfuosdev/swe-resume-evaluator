@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Document, Page } from 'react-pdf';
+import { Document, Page, pdfjs } from 'react-pdf';
+
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 /**
  * PdfViewer Component.
@@ -8,7 +10,7 @@ import { Document, Page } from 'react-pdf';
  * @component
  *
  * @param {Object} props
- * @param {string} props.file The URL or file path of the PDF to display.
+ * @param {File} props.file The URL or file path of the PDF to display.
  * @param {number} props.width The width of the PDF viewer.
  * @param {number} props.height The height of the PDF viewer.
  *
@@ -17,6 +19,7 @@ import { Document, Page } from 'react-pdf';
 
 function PdfViewer(props) {
     const { file, width, height } = props;
+    console.log(file);
     return (
         <div style={{ width, height }}>
             <Document file={file}>

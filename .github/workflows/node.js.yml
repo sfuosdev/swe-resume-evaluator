@@ -22,6 +22,7 @@ jobs:
               with:
                   node-version: ${{ matrix.node-version }}
                   cache: 'npm'
+            
             - name: Install React Dependencies
               run: npm install --legacy-peer-deps
 
@@ -31,6 +32,22 @@ jobs:
             - name: Install NodeJS Dependencies
               run: npm install --legacy-peer-deps
               working-directory: server
+
+            - name: Create and populate env file
+              working-directory: server
+              env:
+                FB_PROJECT_ID: ${{ secrets.FB_PROJECT_ID }}
+                FB_PRIVATE_KEY_ID: ${{ secrets.FB_PRIVATE_KEY_ID }}
+                FB_PRIVATE_KEY: ${{ secrets.FB_PRIVATE_KEY }}
+                FB_CLIENT_EMAIL: ${{ secrets.FB_CLIENT_EMAIL }}
+                FB_CLIENT_ID: ${{ secrets.FB_CLIENT_ID }}
+              run: |
+                touch .env
+                echo FB_PROJECT_ID="$FB_PROJECT_ID" >> .env
+                echo FB_PRIVATE_KEY_ID="$FB_PRIVATE_KEY_ID" >> .env
+                echo FB_PRIVATE_KEY="$FB_PRIVATE_KEY" >> .env
+                echo FB_CLIENT_EMAIL="$FB_CLIENT_EMAIL" >> .env
+                echo FB_CLIENT_ID="$FB_CLIENT_ID" >> .env
 
             - name: Run NodeJS Tests
               run: npm test

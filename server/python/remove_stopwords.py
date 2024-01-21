@@ -65,6 +65,7 @@ def remove_stopwords(csv_filepath: str):
         raise Exception(f"{csv_filepath} is not a valid CSV file")
 
     # Download NLTK stopwords
+    nltk.download('averaged_perceptron_tagger')
     nltk.download('stopwords')
 
     # Load the CSV file into a DataFrame

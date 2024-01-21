@@ -1,0 +1,64 @@
+name: Deploy
+
+on:
+    workflow_dispatch:
+
+env:
+  AWS_REGION: ${{ vars.AWS_REGION }}
+  S3_BUCKET: ${{ vars.S3_BUCKET }}
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+
+        strategy:
+          matrix:
+            node-version: [ '20.10.0' ]
+
+        steps:
+            - uses: actions/checkout@v3
+            - name: Use Node.js ${{ matrix.node-version }}
+              uses: actions/setup-node@v3
+              with:
+                  node-version: ${{ matrix.node-version }}
+                  cache: 'npm'
+
+            - name: Installing Dependencies
+              run: npm install
+            - name: Create a React Build
+              run: npm run build
+            - name: Remove old static
+              run: rm -rf server/public
+            - name: Move build to server index location
+              run: mv build server/public
+
+
+            - name: Create and populate env file
+              working-directory: server
+              env:
+                FB_PROJECT_ID: ${{ secrets.FB_PROJECT_ID }}
+                FB_PRIVATE_KEY_ID: ${{ secrets.FB_PRIVATE_KEY_ID }}
+                FB_PRIVATE_KEY: ${{ secrets.FB_PRIVATE_KEY }}
+                FB_CLIENT_EMAIL: ${{ secrets.FB_CLIENT_EMAIL }}
+                FB_CLIENT_ID: ${{ secrets.FB_CLIENT_ID }}
+              run: |
+                touch .env
+                echo FB_PROJECT_ID="$FB_PROJECT_ID" >> .env
+                echo FB_PRIVATE_KEY_ID="$FB_PRIVATE_KEY_ID" >> .env
+                echo FB_PRIVATE_KEY="$FB_PRIVATE_KEY" >> .env
+                echo FB_CLIENT_EMAIL="$FB_CLIENT_EMAIL" >> .env
+                echo FB_CLIENT_ID="$FB_CLIENT_ID" >> .env
+
+            - name: Configure AWS credentials
+              uses: aws-actions/configure-aws-credentials@0e613a0980cbf65ed5b322eb7a1e075d28913a83
+              with:
+                aws-access-key-id: ${{ env.AWS_ACCESS_KEY_ID }}
+                aws-secret-access-key: ${{ env.AWS_SECRET_ACCESS_KEY }}
+                aws-region: ${{ env.AWS_REGION }}
+
+            - name: \[S3] Deploy to S3 bucket
+              env:
+                RELEASE_NAME: ${{ github.sha }}
+              run: aws s3 sync server s3://${{ env.S3_BUCKET }}/swe-resume-evaluator/$RELEASE_NAME --delete
