@@ -49,11 +49,11 @@ jobs:
                 FB_CLIENT_ID: ${{ secrets.FB_CLIENT_ID }}
               run: |
                 touch .env
-                echo FB_PROJECT_ID="$FB_PROJECT_ID" >> .env
-                echo FB_PRIVATE_KEY_ID="$FB_PRIVATE_KEY_ID" >> .env
-                echo FB_PRIVATE_KEY="$FB_PRIVATE_KEY" >> .env
-                echo FB_CLIENT_EMAIL="$FB_CLIENT_EMAIL" >> .env
-                echo FB_CLIENT_ID="$FB_CLIENT_ID" >> .env
+                echo FB_PROJECT_ID=\""$FB_PROJECT_ID"\" >> .env
+                echo FB_PRIVATE_KEY_ID=\""$FB_PRIVATE_KEY_ID"\" >> .env
+                echo FB_PRIVATE_KEY=\""$FB_PRIVATE_KEY"\" >> .env
+                echo FB_CLIENT_EMAIL=\""$FB_CLIENT_EMAIL"\" >> .env
+                echo FB_CLIENT_ID=\""$FB_CLIENT_ID"\" >> .env
 
             - name: Configure AWS credentials
               uses: aws-actions/configure-aws-credentials@0e613a0980cbf65ed5b322eb7a1e075d28913a83
