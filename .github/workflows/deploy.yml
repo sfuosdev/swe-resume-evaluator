@@ -35,6 +35,9 @@ jobs:
             - name: Move build to server index location
               run: mv build server/public
 
+            - name: Remove node_modules
+              working-directory: server
+              run: rm -rf node_modules
 
             - name: Create and populate env file
               working-directory: server
