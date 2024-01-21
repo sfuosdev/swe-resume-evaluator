@@ -4,6 +4,7 @@
     "description": "",
     "main": "server.js",
     "scripts": {
+        "preinstall": "./preinstall.sh",
         "test": "jest --runInBand"
     },
     "author": "",
