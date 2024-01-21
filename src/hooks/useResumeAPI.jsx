@@ -18,11 +18,14 @@ export const useResumeApi = () => {
         const data = new FormData();
         data.append('file', resumeFile);
         try {
-            fetch(`http://localhost:3000/resume`, {
-                method: 'POST',
-                body: data,
-                mode: 'cors',
-            })
+            fetch(
+                `http://${process.env.REACT_APP_BASE_URL}:${process.env.REACT_APP_PORT}/resume`,
+                {
+                    method: 'POST',
+                    body: data,
+                    mode: 'cors',
+                },
+            )
                 .then((res) => {
                     console.log(res);
                     return res;

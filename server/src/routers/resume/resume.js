@@ -1,6 +1,6 @@
 const express = require('express');
 const multer = require('multer');
-const { PythonShell } = require('python-shell')
+const { PythonShell } = require('python-shell');
 const path = require('path');
 
 const router = express.Router();
@@ -69,12 +69,16 @@ const upload = multer({ storage });
  */
 router.post('/', upload.single('file'), async (req, res) => {
     try {
-        const filePath = path.join(__dirname, '../../../userdata', req.file.filename);
+        const filePath = path.join(
+            __dirname,
+            '../../../userdata',
+            req.file.filename,
+        );
         const pyPath = path.join(__dirname, '../../../python/');
         const options = {
             scriptPath: path.join(__dirname, '../../../python'),
             args: [filePath, pyPath],
-        }
+        };
         const result = await PythonShell.run('classifier_2.py', options);
 
         return res.status(200).json({

@@ -26,19 +26,6 @@ jobs:
                   node-version: ${{ matrix.node-version }}
                   cache: 'npm'
 
-            - name: Installing Dependencies
-              run: npm install
-            - name: Create a React Build
-              run: npm run build
-            - name: Remove old static
-              run: rm -rf server/public
-            - name: Move build to server index location
-              run: mv build server/public
-
-            - name: Remove node_modules
-              working-directory: server
-              run: rm -rf node_modules
-
             - name: Create and populate env file
               working-directory: server
               env:
@@ -65,4 +52,4 @@ jobs:
             - name: \[S3] Deploy to S3 bucket
               env:
                 RELEASE_NAME: ${{ github.sha }}
-              run: aws s3 sync server s3://${{ env.S3_BUCKET }}/swe-resume-evaluator/$RELEASE_NAME --delete
+              run: aws s3 sync . s3://${{ env.S3_BUCKET }}/swe-resume-evaluator/$RELEASE_NAME --delete

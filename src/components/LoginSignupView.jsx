@@ -100,15 +100,18 @@ function LoginSignupView({ isLogin, toggleView }) {
                     password,
                 };
                 console.log(JSON.stringify(data));
-                await fetch('http://localhost:4000/auth/signup', {
-                    mode: 'cors',
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Accept: 'application/json',
+                await fetch(
+                    `http://${process.env.REACT_APP_BASE_URL}:${process.env.REACT_APP_PORT}/auth/signup`,
+                    {
+                        mode: 'cors',
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            Accept: 'application/json',
+                        },
+                        body: JSON.stringify(data),
                     },
-                    body: JSON.stringify(data),
-                })
+                )
                     .then((response) => response.json())
                     .then((res) => {
                         localStorage.setItem('userToken', res.user_token);

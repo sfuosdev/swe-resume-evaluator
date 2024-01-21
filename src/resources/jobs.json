@@ -1,8 +1,8 @@
 {
-    "jobs":[
+    "jobs": [
         {
             "job_name": "Designer",
-            "job_description": "A designer is a person who plans the form or structure of something before it is made, by preparing drawings or plans. \nIn practice, anyone who creates tangible or intangible objects, products, processes, laws, games, graphics, services, or experiences can be referred to as a designer."    
+            "job_description": "A designer is a person who plans the form or structure of something before it is made, by preparing drawings or plans. \nIn practice, anyone who creates tangible or intangible objects, products, processes, laws, games, graphics, services, or experiences can be referred to as a designer."
         },
         {
             "job_name": "Human Resources Manager",
@@ -24,5 +24,5 @@
             "job_name": "Machine Learning Engineer",
             "job_description": "A machine learning engineer designs, develops, and implements machine learning algorithms and models to enable computers to perform tasks without explicit programming. They leverage statistical analysis and data-driven insights to create scalable solutions, optimizing algorithms for accuracy and efficiency in various applications, such as image recognition, natural language processing, and predictive analytics."
         }
-        ]
+    ]
 }

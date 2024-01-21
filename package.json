@@ -59,11 +59,10 @@
   },
   "scripts": {
     "preinstall": "./preinstall.sh",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
-    "start": "GENERATE_SOURCEMAP=false PORT=4000 react-scripts start",
+    "build": "GENERATE_SOURCEMAP=false react-scripts build && rm -rf server/public && mv build server/public",
+    "start": "cd server && npm run start",
+    "develop": "GENERATE_SOURCEMAP=false PORT=4000 react-scripts start",
     "winStart": "set \"GENERATE_SOURCEMAP=false\" && react-scripts start",
-    "build": "GENERATE_SOURCEMAP=false react-scripts build",
     "winBuild": "set \"GENERATE_SOURCEMAP=false\" && react-scripts build",
     "test": "GENERATE_SOURCEMAP=false react-scripts test",
     "winTest": "set \"GENERATE_SOURCEMAP=false\" && react-scripts test",
@@ -72,6 +71,8 @@
     "lint": "eslint src/**/*.js{,x} server/src/**/*.js",
     "lint:fix": "eslint --fix src/**/*.js{,x} server/src/**/*.js",
     "docs": "jsdoc -c jsdoc.conf.json",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "prepare": "husky install",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
