@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Dropzone from '../components/Dropzone';
-import DragAndDropIndicator from '../components/DragAndDropIndicator';
 import { useResumeApi } from '../hooks/useResumeAPI';
+import StepIndicator from '../components/StepIndicator';
 
 const Wrapper = styled.div`
     display: flex;
@@ -101,7 +101,9 @@ function UploadPage() {
     const handleAcceptButtonClick = () => {
         if (fileToUpload && allowedFileTypes.includes(fileType)) {
             evaluateResume(fileToUpload);
-            navigate('/loading');
+            navigate('/loading', {
+                state: { fileURL: fileToUpload },
+            });
         } else {
             setErrorMessage(
                 'Invalid file type. Please upload a PDF or Word document.',
@@ -109,7 +111,7 @@ function UploadPage() {
         }
     };
     const handleDeclineButtonClick = () => {
-        navigate('/termAndCondition');
+        navigate('/guideline');
     };
 
     return (
@@ -120,7 +122,6 @@ function UploadPage() {
                 width={600}
                 height={150}
             />
-            <DragAndDropIndicator onFileChange={handleFileChange} />
             {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
             <ButtonContainer>
                 <DeclineButton type="button" onClick={handleDeclineButtonClick}>
@@ -136,6 +137,7 @@ function UploadPage() {
                     Evaluate
                 </AcceptButton>
             </ButtonContainer>
+            <StepIndicator pageNum={3} />
         </Wrapper>
     );
 }

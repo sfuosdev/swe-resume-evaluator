@@ -17,7 +17,8 @@ const fbApp = initializeApp(firebaseConfig);
 const fbAuth = getAuth(fbApp);
 
 const Social = styled.button`
-    background-color: #0077b5;
+    background-color: #01dfa5;
+    border-radius: 4px;
     justify-content: center;
     width: 80%;
     color: white;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import TermAndCondition from '../components/TermAndCondition';
+import Guidelines from '../components/Guidelines';
 import StepIndicator from '../components/StepIndicator';
 
 const Wrapper = styled.div`
@@ -24,7 +24,7 @@ const DeclineButton = styled.button`
     position: relative;
     z-index: 2;
     font-size: 16px;
-    margin-top: 20px; /* Adjust the margin to your preference */
+    margin-top: 20px;
     background-color: white;
     color: grey;
     padding: 10px 20px;
@@ -34,7 +34,6 @@ const DeclineButton = styled.button`
     border-style: solid;
     border-color: grey;
     transition: background-color 0.3s ease;
-
     &:hover {
         background-color: #e6e6e6;
     }
@@ -44,7 +43,7 @@ const AcceptButton = styled.button`
     position: relative;
     z-index: 2;
     font-size: 16px;
-    margin-top: 20px; /* Adjust the margin to your preference */
+    margin-top: 20px;
     background-color: #01dfa5;
     color: white;
     padding: 10px 20px;
@@ -53,25 +52,24 @@ const AcceptButton = styled.button`
     border-radius: 4px;
     align-items: center;
     transition: background-color 0.3s ease;
-
     &:hover {
         background-color: #008e74;
     }
 `;
 
-function TermAndConditionPage() {
+function GuidelinePage() {
     const navigate = useNavigate();
     const handleAcceptButtonClick = () => {
-        navigate('/guideline');
+        navigate('/upload');
     };
     const handleDeclineButtonClick = () => {
-        navigate('/');
+        navigate('/termAndCondition');
     };
 
     return (
         <Wrapper>
-            <Title>Terms And Conditions</Title>
-            <TermAndCondition width={600} height={300} />
+            <Title>Guideline</Title>
+            <Guidelines />
             <ButtonContainer>
                 <DeclineButton type="button" onClick={handleDeclineButtonClick}>
                     Decline
@@ -80,9 +78,9 @@ function TermAndConditionPage() {
                     Accept
                 </AcceptButton>
             </ButtonContainer>
-            <StepIndicator pageNum={1} />
+            <StepIndicator pageNum={2} />
         </Wrapper>
     );
 }
 
-export default TermAndConditionPage;
+export default GuidelinePage;

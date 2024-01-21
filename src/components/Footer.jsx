@@ -31,7 +31,7 @@ function Footer() {
             <WrapperLeft>
                 <div>Term of Service</div>
                 <div>
-                    <a href="https://github.com/sfuSwSo">
+                    <a href="https://github.com/sfuosdev">
                         <FontAwesomeIcon
                             icon={faGithub}
                             style={{ marginRight: '10px' }}

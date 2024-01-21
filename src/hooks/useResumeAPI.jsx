@@ -23,6 +23,10 @@ export const useResumeApi = () => {
                 body: data,
                 mode: 'cors',
             })
+                .then((res) => {
+                    console.log(res);
+                    return res;
+                })
                 .then((res) => res.json())
                 .then((res) => {
                     setApiResponse(res);

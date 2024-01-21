@@ -5,6 +5,7 @@ import './App.css';
 import MainPage from './containers/MainPage';
 import ReportingPage from './containers/ReportingPage';
 import TermAndConditionPage from './containers/TermAndConditionPage';
+import GuidelinePage from './containers/GuidelinePage';
 import LoadingPage from './containers/LoadingPage';
 import NotFoundPage from './containers/NotFoundPage';
 import UploadPage from './containers/UploadPage';
@@ -31,6 +32,10 @@ function App() {
                             <Route
                                 path="/termAndCondition"
                                 element={<TermAndConditionPage />}
+                            />
+                            <Route
+                                path="/guideline"
+                                element={<GuidelinePage />}
                             />
                             <Route path="/upload" element={<UploadPage />} />
                             <Route path="/loading" element={<LoadingPage />} />

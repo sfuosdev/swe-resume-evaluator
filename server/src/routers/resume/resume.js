@@ -9,7 +9,7 @@ const router = express.Router();
 // multipart/form-data
 const storage = multer.diskStorage({
     destination: (req, file, done) => {
-        done(null, path.join(__dirname, '../../../resources/'));
+        done(null, path.join(__dirname, '../../../userdata/'));
     },
     filename: (req, file, callback) => {
         // change filename to original name
@@ -69,25 +69,21 @@ const upload = multer({ storage });
  */
 router.post('/', upload.single('file'), async (req, res) => {
     try {
-        // res.set('Access-Control-Allow-Origin', '*');
-        // console.log(req.file); // req.file = { fieldname, originalname, ..., destination, filename, ...}
-        const filePath = path.join(__dirname, '../../../resources', req.file.filename);
+        const filePath = path.join(__dirname, '../../../userdata', req.file.filename);
         const pyPath = path.join(__dirname, '../../../python/');
         const options = {
             scriptPath: path.join(__dirname, '../../../python'),
             args: [filePath, pyPath],
         }
-        // let pyshell = new PythonShell('classifier_2.py', options);
-        // pyshell.on('message', function (message) {
-        //     console.log(message)
-        // });
         const result = await PythonShell.run('classifier_2.py', options);
+
         return res.status(200).json({
             message: 'OK',
             status: 200,
             job_matches: JSON.parse(result),
         });
     } catch (error) {
+        console.log(error);
         return res.status(400).json({
             message: error.message,
             status: 400,
