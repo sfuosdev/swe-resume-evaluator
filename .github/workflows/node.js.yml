@@ -26,8 +26,8 @@ jobs:
             - name: Install React Dependencies
               run: npm install --legacy-peer-deps
 
-            #- name: Run React Tests
-            #  run: npm test
+            - name: Run React Tests
+              run: npm test
 
             - name: Install NodeJS Dependencies
               run: npm install --legacy-peer-deps
@@ -49,6 +49,6 @@ jobs:
                 echo FB_CLIENT_EMAIL="$FB_CLIENT_EMAIL" >> .env
                 echo FB_CLIENT_ID="$FB_CLIENT_ID" >> .env
 
-            #- name: Run NodeJS Tests
-            #  run: npm test
-            #  working-directory: server
+            - name: Run NodeJS Tests
+              run: npm test
+              working-directory: server
