@@ -31,6 +31,8 @@ Naive Bayes classifier is used for natural language processing.
 ### Credits
 **`Project Lead` Jusung Park [@Pentaminum](https://github.com/Pentaminum)**  
 
+**`Technical Advisor` Jiin Kim [@jiin-kim109](https://github.com/jiin-kim109)**  
+
 **`Developer` Kathy Cho [@heyj0jo](https://github.com/heyj0jo)**  
 **`Developer` Seunghwan Kim [@SHKim331](https://github.com/SHKim331)**  
 **`Developer` Tommy (Kanggeon) Oh [@TommyOh0428](https://github.com/TommyOh0428)**  
